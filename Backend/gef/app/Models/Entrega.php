@@ -24,7 +24,7 @@ class Entrega extends Model
      */
     public function tutor()
     {
-        return $this->belongsTo(Usuario::class, 'id_tutor', 'id_usuario');
+        return $this->belongsTo(User::class, 'id_tutor', 'id_usuario');
     }
 
     /**

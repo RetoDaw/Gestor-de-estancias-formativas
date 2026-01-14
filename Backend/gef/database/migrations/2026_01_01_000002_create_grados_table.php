@@ -26,7 +26,7 @@ return new class extends Migration
             // Foreign keys
             $table->foreign('id_alumno')
                   ->references('id_usuario')
-                  ->on('usuario')
+                  ->on('users')
                   ->onDelete('cascade');
             
             $table->foreign('id_grado')

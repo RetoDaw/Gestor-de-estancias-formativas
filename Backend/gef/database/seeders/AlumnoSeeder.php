@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Usuario;
+use App\Models\User;
 use App\Models\Alumno;
 use App\Models\Grado;
 
@@ -14,7 +14,7 @@ class AlumnoSeeder extends Seeder
      */
     public function run(): void
     {
-        $usuariosAlumnos = Usuario::where('tipo_usuario', 'ALUMNO')->get();
+        $usuariosAlumnos = User::where('tipo_usuario', 'ALUMNO')->get();
         $grados = Grado::all();
 
         if ($grados->isEmpty()) {

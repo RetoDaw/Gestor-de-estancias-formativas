@@ -51,7 +51,7 @@ class Estancia extends Model
      */
     public function tutorEmpresa()
     {
-        return $this->belongsTo(Usuario::class, 'id_tutor_empresa', 'id_usuario');
+        return $this->belongsTo(User::class, 'id_tutor_empresa', 'id_usuario');
     }
 
     /**
@@ -59,7 +59,7 @@ class Estancia extends Model
      */
     public function tutorCentro()
     {
-        return $this->belongsTo(Usuario::class, 'id_tutor_centro', 'id_usuario');
+        return $this->belongsTo(User::class, 'id_tutor_centro', 'id_usuario');
     }
 
     /**

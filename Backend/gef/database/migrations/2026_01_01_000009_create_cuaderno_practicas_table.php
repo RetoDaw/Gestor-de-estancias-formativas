@@ -20,7 +20,7 @@ return new class extends Migration
 
             $table->foreign('id_tutor')
                   ->references('id_usuario')
-                  ->on('usuario')
+                  ->on('users')
                   ->onDelete('cascade');
 
             $table->foreign('id_grado')
@@ -68,7 +68,7 @@ return new class extends Migration
 
             $table->foreign('id_tutor')
                   ->references('id_usuario')
-                  ->on('usuario')
+                  ->on('users')
                   ->onDelete('cascade');
         });
     }

@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Estancia;
 use App\Models\Alumno;
 use App\Models\Empresa;
-use App\Models\Usuario;
+use App\Models\User;
 use App\Models\HorarioSemanal;
 use App\Models\Horario;
 use Carbon\Carbon;
@@ -20,8 +20,8 @@ class EstanciaSeeder extends Seeder
     {
         $alumnos = Alumno::all();
         $empresas = Empresa::all();
-        $tutoresCentro = Usuario::where('tipo_usuario', 'TUTOR_CENTRO')->get();
-        $tutoresEmpresa = Usuario::where('tipo_usuario', 'TUTOR_EMPRESA')->get();
+        $tutoresCentro = User::where('tipo_usuario', 'TUTOR_CENTRO')->get();
+        $tutoresEmpresa = User::where('tipo_usuario', 'TUTOR_EMPRESA')->get();
 
         if ($alumnos->isEmpty() || $empresas->isEmpty()) {
             echo "⚠️  Faltan alumnos o empresas. Ejecuta los seeders anteriores.\n";

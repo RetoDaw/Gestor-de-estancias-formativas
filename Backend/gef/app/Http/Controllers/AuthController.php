@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\Models\Usuario;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {   
@@ -14,22 +15,22 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required'
         ]);
+        $user = User::where('email', $request->email)->first();
 
-        if (!Auth::attempt($credenciales)) {
+        if (!$user || !Hash::check($request->password_hash, $user->password_hash)) {
             return response()->json([
                 'message' => 'El login es incorrecto'
             ], 401);
+        }else{
+                $token = $user->createToken('auth_token')->plainTextToken;
+
+                return response()->json([
+                    'access_token' => $token,
+                    'token_type' => 'Bearer',
+                    'user' => $user,
+                ]); 
         }
-
-        $user = Auth::user();
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-            'user' => $user,
-        ]);
-    }
+}
 
     public function logout(Request $request)
     {

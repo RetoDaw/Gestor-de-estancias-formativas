@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Usuario;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class UsuarioSeeder extends Seeder
@@ -14,7 +14,7 @@ class UsuarioSeeder extends Seeder
     public function run(): void
     {
         // Tutores de Centro
-        Usuario::create([
+        User::create([
             'email' => 'juan.tutor@centro.edu',
             'password_hash' => Hash::make('password123'),
             'nombre' => 'Juan',
@@ -23,7 +23,7 @@ class UsuarioSeeder extends Seeder
             'tipo_usuario' => 'TUTOR_CENTRO'
         ]);
 
-        Usuario::create([
+        User::create([
             'email' => 'maria.tutora@centro.edu',
             'password_hash' => Hash::make('password123'),
             'nombre' => 'María',
@@ -33,7 +33,7 @@ class UsuarioSeeder extends Seeder
         ]);
 
         // Tutores de Empresa
-        Usuario::create([
+        User::create([
             'email' => 'carlos.tech@empresa.com',
             'password_hash' => Hash::make('password123'),
             'nombre' => 'Carlos',
@@ -42,7 +42,7 @@ class UsuarioSeeder extends Seeder
             'tipo_usuario' => 'TUTOR_EMPRESA'
         ]);
 
-        Usuario::create([
+        User::create([
             'email' => 'laura.dev@empresa.com',
             'password_hash' => Hash::make('password123'),
             'nombre' => 'Laura',
@@ -64,7 +64,7 @@ class UsuarioSeeder extends Seeder
         ];
 
         foreach ($alumnos as $alumno) {
-            Usuario::create([
+            User::create([
                 'email' => $alumno[2],
                 'password_hash' => Hash::make('password123'),
                 'nombre' => $alumno[0],
@@ -74,6 +74,6 @@ class UsuarioSeeder extends Seeder
             ]);
         }
 
-        echo "✅ Creados " . Usuario::count() . " usuarios\n";
+        echo "✅ Creados " . User::count() . " usuarios\n";
     }
 }

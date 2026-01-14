@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         // Empresas
-        Schema::create('empresa', function (Blueprint $table) {
+         Schema::create('empresa', function (Blueprint $table) {
             $table->id('id_empresa');
             $table->string('cif', 20)->unique();
             $table->string('nombre', 150);
@@ -22,36 +22,24 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // Estancias de prácticas
         Schema::create('estancia', function (Blueprint $table) {
             $table->id('id_estancia');
+
             $table->unsignedBigInteger('id_alumno');
             $table->unsignedBigInteger('id_empresa');
             $table->unsignedBigInteger('id_tutor_empresa')->nullable();
             $table->unsignedBigInteger('id_tutor_centro')->nullable();
+
+            $table->foreign('id_alumno')->references('id_alumno')->on('alumno')->cascadeOnDelete();
+            $table->foreign('id_empresa')->references('id_empresa')->on('empresa')->cascadeOnDelete();
+            $table->foreign('id_tutor_empresa')->references('id_usuario')->on('users')->nullOnDelete();
+            $table->foreign('id_tutor_centro')->references('id_usuario')->on('users')->nullOnDelete();
+
             $table->date('fecha_inicio');
             $table->date('fecha_fin');
             $table->integer('horas_totales');
             $table->integer('dias_totales');
             $table->timestamps();
-
-            // Foreign keys
-            $table->foreign('id_alumno')
-                  ->references('id_alumno')
-                  ->on('alumno')
-                  ->onDelete('cascade');
-
-            $table->foreign('id_empresa')
-                  ->references('id_empresa')
-                  ->on('empresa');
-
-            $table->foreign('id_tutor_empresa')
-                  ->references('id_usuario')
-                  ->on('usuario');
-
-            $table->foreign('id_tutor_centro')
-                  ->references('id_usuario')
-                  ->on('usuario');
         });
     }
 

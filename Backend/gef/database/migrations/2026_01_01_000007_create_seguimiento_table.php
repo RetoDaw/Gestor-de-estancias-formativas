@@ -30,11 +30,11 @@ return new class extends Migration
 
             $table->foreign('id_receptor')
                   ->references('id_usuario')
-                  ->on('usuario');
+                  ->on('users');
 
             $table->foreign('id_emisor')
                   ->references('id_usuario')
-                  ->on('usuario');
+                  ->on('users');
         });
     }
 

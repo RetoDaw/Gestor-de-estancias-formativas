@@ -20,4 +20,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/guardarAlumno', [AlumnoController::class, 'store']);
     Route::post('/guardarEmpresa', [EmpresaController::class, 'store']);
     Route::post('/guardarUsuario', [UsuarioController::class, 'store']);
-});
+  });

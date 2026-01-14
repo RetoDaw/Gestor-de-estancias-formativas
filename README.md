@@ -2,7 +2,7 @@
 
 🔜 Tenemos poco tiempo, pero sin prisa, ni pausa.
 
-❗ 🔗 Enlace trello:
+❗ 🔗 Enlace trello: https://trello.com/b/XA7ifJiQ/reto-gestor-de-estancias
 
 
 ❗ 🔗 Enlace figma:

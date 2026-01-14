@@ -4,14 +4,16 @@
         <form @submit.prevent="login">
             <input type="email" v-model="email" placeholder="Email" required>
             <input type="password" v-model="password" placeholder="Contraseña" required>
-            <button type="submit">Continuar</button>
+            <button type="submit" :disabled="loading">
+                {{ loading ? 'Cargando...' : 'Continuar' }}
+            </button>
         </form>
         <p v-if="error" class="error">{{ error }}</p>
     </div>
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '@/axios' 
 
 export default {
     data() {
@@ -19,22 +21,31 @@ export default {
             email: '',
             password: '', 
             error: '',
+            loading: false
         }
     },
     methods: {
         async login() {
+            this.loading = true
+            this.error = ''
+            
             try {
-                const response = await axios.post('http://localhost:8000/api/login', {
+                const response = await axios.post('/login', {
                     email: this.email,
                     password: this.password  
                 })
                 
-                localStorage.setItem('token', response.data.access_token)  
+                localStorage.setItem('token', response.data.access_token)
+                axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access_token}`
+                
                 alert('¡Has iniciado sesión correctamente!')
+                this.$router.push('/dashboard')
                 
             } catch(err) {
                 this.error = err.response?.data?.message || 'Error al iniciar sesión'
-                console.error(err)
+                console.error('Error completo:', err)
+            } finally {
+                this.loading = false
             }
         }
     }
@@ -85,8 +96,13 @@ button {
     font-weight: bold;
 }
 
-button:hover {
+button:hover:not(:disabled) {
     background-color: #45a049;
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
 }
 
 .error {

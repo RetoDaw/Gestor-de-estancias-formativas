@@ -1,0 +1,22 @@
+#calendario table {
+  border-collapse: separate;
+}
+#calendario table tbody tr td {
+  border: 0.2em solid black;
+  padding: 0.4em;
+  text-transform: capitalize;
+}
+#calendario table tbody tr:first-child td:first-child {
+  border-top-left-radius: 0.5em;
+}
+#calendario table tbody tr:first-child td:last-child {
+  border-top-right-radius: 0.5em;
+}
+#calendario table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 0.5em;
+}
+#calendario table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 0.5em;
+}
+
+/*# sourceMappingURL=calendario.css.map */

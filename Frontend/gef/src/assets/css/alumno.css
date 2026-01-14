@@ -1,0 +1,11 @@
+#principal {
+  text-transform: capitalize;
+}
+#principal #opciones button {
+  background-color: #1b6dac;
+  color: white;
+  box-shadow: 0.2em 0.2em 0.3em grey;
+  height: 2em;
+}
+
+/*# sourceMappingURL=alumno.css.map */

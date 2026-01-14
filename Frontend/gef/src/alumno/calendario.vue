@@ -1,4 +1,5 @@
 <script setup>
+import "../assets/css/calendario.css";
 const calendario = {
     fecIni: '01/03/2026',
     fecFin: '01/06/2026'
@@ -37,7 +38,7 @@ function ponerHorario(dia){
 <template>
     <h1>Calendario</h1>
     <div id="calendario">
-        <table border="1px">
+        <table>
             <tbody>
                 <tr>
                     <td>
@@ -48,7 +49,7 @@ function ponerHorario(dia){
                     </td>
                 </tr>
                 <tr v-for="(dia,nombre) in horario" :key="nombre">
-                    <td><b>{{ nombre }}:</b> {{ ponerHorario(dia) }}</td>
+                    <td colspan="2"><b>{{ nombre }}:</b> {{ ponerHorario(dia) }}</td>
                 </tr>
             </tbody>
         </table>

@@ -1,5 +1,7 @@
 <script setup>
-import {ref} from 'vue'
+import { ref } from 'vue'
+import "../assets/css/seguimiento.css";
+
 const seguimientos = ref([
     {
         dia: '2025-01-10',
@@ -62,16 +64,15 @@ function crearSeguimiento(){
 
     seguimientos.value.push(nuevo)
 }
-
 </script>
+
 <template>
     <h1>Seguimiento</h1>
 
-    <button @click="crearSeguimiento">Nuevo seguimiento</button>
+    <button class="btn-nuevo" @click="crearSeguimiento">Nuevo seguimiento</button>
 
     <div id="seguimiento">
-        <table border="1px">
-            <thead>
+        <table border="0"> <thead>
                 <tr>
                     <th>Dia</th>
                     <th>Hora</th>
@@ -83,26 +84,22 @@ function crearSeguimiento(){
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(s, index) in seguimientos" :key="s.id">
-                    <!-- DIA -->
+                <tr v-for="(s, index) in seguimientos" :key="index">
                     <td>
                         <span v-if="!s.editando">{{ mostrarDato(s.dia) }}</span>
                         <input v-else type="date" v-model="s.dia">
                     </td>
 
-                    <!-- HORA -->
                     <td>
                         <span v-if="!s.editando">{{mostrarDato(s.hora)}}</span>
                         <input v-else type="time" v-model="s.hora">
                     </td>
 
-                    <!-- ACCION -->
                     <td>
                         <span v-if="!s.editando">{{mostrarDato(s.accion)}}</span>
                         <input v-else type="text" v-model="s.accion">
                     </td>
 
-                    <!-- EMISOR -->
                     <td>
                         <span v-if="!s.editando">{{ s.emisor }}</span>
                         <select v-else v-model="s.emisor">
@@ -112,7 +109,6 @@ function crearSeguimiento(){
                         </select>
                     </td>
 
-                    <!-- RECEPTOR -->
                     <td>
                         <span v-if="!s.editando">{{ s.receptor }}</span>
                         <select v-else v-model="s.receptor">
@@ -122,7 +118,6 @@ function crearSeguimiento(){
                         </select>
                     </td>
 
-                    <!-- MEDIO -->
                     <td>
                         <span v-if="!s.editando">{{ s.medio }}</span>
                         <select v-else v-model="s.medio">
@@ -134,12 +129,11 @@ function crearSeguimiento(){
                         </select>
                     </td>
 
-                    <!-- BOTONES -->
-                     <td>
-                        <button v-if="!s.editando" @click="editar(s)">Editar</button>
-                        <button v-else @click="guardar(s)">Guardar</button>
-                        <button @click="eliminar(index)">Eliminar</button>
-                     </td>
+                    <td>
+                        <button class="btn-editar" v-if="!s.editando" @click="editar(s)">Editar</button>
+                        <button class="btn-guardar" v-else @click="guardar(s)">Guardar</button>
+                        <button class="btn-eliminar" @click="eliminar(index)">Eliminar</button>
+                    </td>
                 </tr>
             </tbody>
         </table>

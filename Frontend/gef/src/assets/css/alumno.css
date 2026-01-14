@@ -1,5 +1,6 @@
-#principal {
+#principal .nombre {
   text-transform: capitalize;
+  margin-top: 1em;
 }
 #principal #opciones button {
   background-color: #1b6dac;

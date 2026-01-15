@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from '@/axios';
 import EmpresaForm from './FormEmpresa.vue';
 import UsuarioForm from './FormUsuario.vue';
 import RAForm from './FormRA.vue';
@@ -30,7 +30,7 @@ export default {
       tipo: '',
       token: localStorage.getItem('token'),
       empresa: { nombre_empresa: '', cif: '', poblacion: '', email: '', telefono: '', tipo_usuario: 'empresa' },
-      usuario: { nombre: '', apellidos: '', email: '', password: '', tipo_usuario: '', grado_id: '' },
+      usuario: { nombre: '', apellidos: '', email: '', password: '', tipo_usuario: '', id_grado: '' },
       ra: { descripcion: '', id_grado: '', competencias: [''] },
       grados: [],
       competencia: { descripcion: '', id_grado: '' }
@@ -72,9 +72,14 @@ export default {
     async guardarUsuario() {
       try {
         const payload = { ...this.usuario };
-        if (payload.tipo_usuario !== 'alumno') { delete payload.grado_id; delete payload.curso; }
-        await axios.post('http://localhost:8000/api/guardarUsuario', payload, { headers: { Authorization: `Bearer ${this.token}` } });
-        alert('Usuario guardado con éxito');
+        if (payload.tipo_usuario !== 'alumno') { 
+          delete payload.id_grado; delete payload.curso; 
+          await axios.post('http://localhost:8000/api/guardarUsuario', payload, { headers: { Authorization: `Bearer ${this.token}` } });
+          alert('Usuario guardado con éxito');
+        }else{
+          await axios.post('http://localhost:8000/api/guardarAlumno', payload, { headers: { Authorization: `Bearer ${this.token}` } });
+          alert('Alumno guardado con éxito');
+        }
       } catch (error) { console.error(error); }
     }
   }

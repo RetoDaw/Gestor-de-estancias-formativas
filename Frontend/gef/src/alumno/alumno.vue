@@ -5,13 +5,7 @@ import 'bootstrap-vue-3/dist/bootstrap-vue-3.css';
 import "../assets/css/alumno.css";
 import Tabla from './tabla.vue'
 
-const alumno = reactive({
-    nombre: 'Aaron',
-    apellidos: 'Jimenez Teixeira',
-    email: 'aaron@aaron.com',
-    telefono: '292929299',
-    grado: 'Desarrollo Web'
-})
+
 
 const Calendario = defineAsyncComponent(()=>import('./calendario.vue'));
 const Empresa = defineAsyncComponent(()=>import('./empresa.vue'));
@@ -23,12 +17,18 @@ const vistaActiva = ref(null)
 function cambiar(vista){
     vistaActiva.value = vistaActiva.value === vista ? null : vista;
 }
-
-function getUser(){
-    return localStorage.getItem('token') || 'No hay usuario';
+const alumno = reactive({});
+async function getUser(){
+    try{
+        const response = await fetch('http://localhost:8000/api/buscarUsuario?user_id=5');
+        const data = await response.json();
+        Object.assign(alumno, data);
+        
+    }catch(error){
+        console.error('Error al buscar el alumno:', error);
+    }
 }
-
-console.log(getUser())
+getUser();
 
 </script>
 

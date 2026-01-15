@@ -24,6 +24,12 @@ function cambiar(vista){
     vistaActiva.value = vistaActiva.value === vista ? null : vista;
 }
 
+function getUser(){
+    return localStorage.getItem('token') || 'No hay usuario';
+}
+
+console.log(getUser())
+
 </script>
 
 <template>

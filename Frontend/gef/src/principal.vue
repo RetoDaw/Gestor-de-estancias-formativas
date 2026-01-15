@@ -7,6 +7,7 @@ import "./assets/css/main.css";
 import { ref, defineAsyncComponent } from 'vue'
 const Alumno = defineAsyncComponent(()=>import('./alumno/alumno.vue'));
 const Crear = defineAsyncComponent(()=>import('./crear/crear.vue'));
+const Cuaderno = defineAsyncComponent(()=>import('./cuaderno/cuaderno.vue'));
 const vistaActiva = ref(null)
 function cambiar(vista){
     vistaActiva.value = vistaActiva.value === vista ? null : vista;
@@ -18,10 +19,12 @@ function cambiar(vista){
             <h1 class="mb-4">Gestion de estancias formativas</h1>
             <button class="col-2" @click="cambiar('alumno')">Info de alumno</button>
             <button class="col-2 ms-3" @click="cambiar('crear')">Crear</button>
+            <button class="col-2 ms-3" @click="cambiar('cuaderno')">Cuaderno</button>
         </nav>
         <main class="row" v-if="vistaActiva !== null">
             <Alumno v-if="vistaActiva === 'alumno'"/>
             <Crear v-if="vistaActiva === 'crear'"/>
+            <Cuaderno v-if="vistaActiva === 'cuaderno'"/>
         </main>
     </body>
 </template>

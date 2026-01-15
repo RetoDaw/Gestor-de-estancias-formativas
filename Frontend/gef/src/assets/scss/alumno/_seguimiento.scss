@@ -1,0 +1,110 @@
+// --- Variables ---
+$primary-color: #34495e; // Azul oscuro cabecera
+$success-color: #27ae60; // Verde
+$warning-color: #f39c12; // Naranja
+$danger-color: #c0392b;  // Rojo
+$light-bg: #f9f9f9;
+$border-color: #ddd;
+
+// --- Estilos Generales ---
+h1 {
+  color: $primary-color;
+  margin-bottom: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+// Botón "Nuevo Seguimiento"
+.btn-nuevo {
+  background-color: #1b6dac;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-bottom: 20px;
+  transition: background 0.2s;
+
+  &:hover {
+    background-color: darken($success-color, 10%);
+  }
+}
+
+// --- Tabla ---
+#seguimiento {
+  width: 100%;
+  overflow-x: auto;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+    thead {
+      background-color: $primary-color;
+      color: white;
+      
+      th {
+        padding: 12px 15px;
+        text-align: left;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom: 1px solid $border-color;
+
+        &:nth-of-type(even) {
+          background-color: $light-bg;
+        }
+
+        &:hover {
+          background-color: darken($light-bg, 5%);
+        }
+
+        td {
+          padding: 10px 15px;
+          vertical-align: middle;
+          color: #333;
+          font-size: 0.95rem;
+
+          // Inputs y Selects en modo edición
+          input, select {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            
+            &:focus {
+              outline: none;
+              border-color: $primary-color;
+            }
+          }
+
+          // Botones de acción (Editar, Guardar, Eliminar)
+          button {
+            padding: 6px 12px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            color: white;
+            font-size: 0.85rem;
+            transition: opacity 0.2s;
+
+            &:hover { opacity: 0.8; }
+
+            // Clases específicas
+            &.btn-editar { background-color: $warning-color; }
+            &.btn-guardar { background-color: $success-color; }
+            &.btn-eliminar { background-color: $danger-color; }
+          }
+        }
+      }
+    }
+  }
+}

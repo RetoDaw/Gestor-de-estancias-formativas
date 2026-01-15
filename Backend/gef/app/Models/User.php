@@ -52,6 +52,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    // IMPORTANTE: Laravel busca 'password' pero tu BD tiene 'password_hash'
+    public function getAuthPassword()
+    {
+        return $this->password_hash;
+    }
+    
     //Relaciones
 
     /**
@@ -102,6 +108,23 @@ class User extends Authenticatable
     public function notasCuadernoEvaluadas()
     {
         return $this->hasMany(NotaCuaderno::class,'id_tutor', 'id_usuario');
+    }
+
+
+        // Métodos helper
+    public function esAlumno()
+    {
+        return $this->tipo_usuario === 'ALUMNO';
+    }
+
+    public function esTutorCentro()
+    {
+        return $this->tipo_usuario === 'TUTOR_CENTRO';
+    }
+
+    public function esTutorEmpresa()
+    {
+        return $this->tipo_usuario === 'TUTOR_EMPRESA';
     }
 
 

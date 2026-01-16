@@ -12,7 +12,7 @@ h1 {
   margin-bottom: 20px;
   font-family: 'Arial', sans-serif;
 }
-
+ 
 // Botón "Nuevo Seguimiento"
 .btn-nuevo {
   background-color: #1b6dac;
@@ -24,11 +24,7 @@ h1 {
   font-size: 1rem;
   margin-bottom: 20px;
   transition: background 0.2s;
-
-  &:hover {
-    background-color: darken($success-color, 10%);
-  }
-}
+} 
 
 // --- Tabla ---
 #seguimiento {
@@ -62,17 +58,12 @@ h1 {
           background-color: $light-bg;
         }
 
-        &:hover {
-          background-color: darken($light-bg, 5%);
-        }
-
         td {
           padding: 10px 15px;
           vertical-align: middle;
           color: #333;
           font-size: 0.95rem;
 
-          // Inputs y Selects en modo edición
           input, select {
             width: 100%;
             padding: 6px;
@@ -85,7 +76,6 @@ h1 {
             }
           }
 
-          // Botones de acción (Editar, Guardar, Eliminar)
           button {
             padding: 6px 12px;
             margin-right: 5px;

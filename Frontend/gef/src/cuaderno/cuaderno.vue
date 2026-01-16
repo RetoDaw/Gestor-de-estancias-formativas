@@ -3,6 +3,8 @@ import { ref, defineAsyncComponent } from 'vue'
 const Entrega = defineAsyncComponent(() => import('./entrega.vue'));
 const VerEntrega = defineAsyncComponent(() => import('./verEntregas.vue'));
 const Subir = defineAsyncComponent(() => import('./subir.vue'));
+import "../assets/css/cuaderno.css";
+
 
 const entregaActiva = ref(null)
 function cambiarVista(vista) {

@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import api from '@/services/api'
+import "../assets/css/entrega.css";
+
 
 const grados = ref([])
 const gradoSeleccionado = ref('')
@@ -62,39 +64,3 @@ async function crearEntrega(e) {
         <p v-if="error" class="mensaje-error">{{ error }}</p>
     </form>
 </template>
-
-<style scoped>
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    max-width: 400px;
-}
-
-select {
-    padding: 0.5rem;
-    font-size: 1rem;
-}
-
-button {
-    padding: 0.5rem 1rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-.mensaje-exito {
-    color: green;
-}
-
-.mensaje-error {
-    color: red;
-}
-</style>

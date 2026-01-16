@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, defineAsyncComponent } from 'vue'
 import api from '@/services/api'
+import "../assets/css/subir.css";
 
 const Entregar = defineAsyncComponent(() => import('./subirEntrega.vue'))
 
@@ -79,32 +80,3 @@ async function cargarEntregas() {
         </div>
     </div>
 </template>
-
-<style scoped>
-.entrega-item {
-    margin: 1rem 0;
-}
-
-.btn-entrega {
-    padding: 1rem;
-    background-color: #ffc107;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-    width: 100%;
-    text-align: left;
-}
-
-.btn-entrega:hover {
-    background-color: #ffb300;
-}
-
-#subirEntrega {
-    margin-top: 2rem;
-    padding: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #f9f9f9;
-}
-</style>

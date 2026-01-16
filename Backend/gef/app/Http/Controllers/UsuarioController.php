@@ -39,4 +39,17 @@ class UsuarioController extends Controller
 
         return response()->json(['message' => 'Usuario creado con éxito', 'user' => $user], 201);
     }
+
+    public function esAlumno(Request $request)
+    {
+        return response()->json(
+            $request->user()->esAlumno()
+        );
+    }
+    public function esTutorCentro(Request $request)
+    {
+        return response()->json(
+            $request->user()->esTutorCentro()
+        );
+    }
 }

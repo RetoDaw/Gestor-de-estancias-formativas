@@ -72,5 +72,18 @@ export default {
     // Usuario
     getUser() {
         return api.get('/user');
+    },
+
+    async tipoUsuario(tipo){
+        let response;
+        switch(tipo){
+            case "tc":
+                response = await api.get('/esTutorCentro');
+                break;
+            case "al":
+                response = await api.get('/esAlumno');
+                break;
+        }
+        return response?.data ?? false;
     }
 };

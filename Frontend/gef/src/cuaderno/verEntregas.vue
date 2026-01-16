@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import api from '@/services/api'
+import "../assets/css/verEntregas.css";
+
 
 const cuadernos = ref([])
 const grados = ref([])
@@ -104,67 +106,3 @@ function formatearFecha(fecha) {
         </table>
     </div>
 </template>
-
-<style scoped>
-form {
-    margin-bottom: 2rem;
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-}
-
-label {
-    font-weight: bold;
-}
-
-select {
-    padding: 0.5rem;
-    font-size: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-thead {
-    background-color: #007bff;
-    color: white;
-}
-
-th, td {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-tbody tr:hover {
-    background-color: #f5f5f5;
-}
-
-.link-cuaderno {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.link-cuaderno:hover {
-    text-decoration: underline;
-}
-
-.loading, .error, .sin-datos {
-    padding: 2rem;
-    text-align: center;
-}
-
-.error {
-    color: red;
-}
-
-.sin-datos {
-    color: #666;
-}
-</style>

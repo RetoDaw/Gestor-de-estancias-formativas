@@ -9,19 +9,18 @@ use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\EntregaController;
 use App\Http\Controllers\GradoController;
+use App\Http\Controllers\GradosController;
+use App\Http\Controllers\CompetenciaTecnicaController;
 
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-
     Route::post('/guardarRA', [ResultadoAprendizajeController::class, 'store']);
-use App\Http\Controllers\GradosController;
-use App\Http\Controllers\CompetenciaTecnicaController;
-    Route::post('/login', [AuthController::class, 'login'])->name('login');
+
     Route::get('/grados', [GradosController::class, 'getGrados']);
     Route::post('/guardarAlumno', [AlumnoController::class, 'store']);
     Route::post('/guardarUsuario', [UsuarioController::class, 'store']);

@@ -1,61 +1,170 @@
 <script setup>
-const entregas = [
-    {
-        id:1,
-        grado:{id:1,nombre:"daw"},
-        cuaderno:{id:1,archivo_pdf:"/cuadernosPrueba/04_linux_4_setencias_control.pdf"},
-        fechaEntrega:'10/01/2026',
-        estancia:{
-            id:1,
-            alumno:{
-                nombre:"Aaron"
-            }
-        }
-    },
-    {
-        id:2,
-        grado:{id:3,nombre:"asir"},
-        cuaderno:{id:2,archivo_pdf:"/cuadernosPrueba/EGIBIDE___Ciclos___Parciales_20251201_092849.pdf"},
-        fechaEntrega:'14/01/2026',
-        estancia:{
-            id:2,
-            alumno:{
-                nombre:"Unax"
-            }
-        }
-    }
-]
-const grados = [
-    {
-        id: 1,
-        nombre: "daw"
-    },
-    {
-        id: 2,
-        nombre: "dam"
-    },
-    {
-        id: 3,
-        nombre: "asir"
-    }
-]
-let grado = '';
+import { ref, onMounted, computed } from 'vue'
+import api from '@/services/api'
 
+const cuadernos = ref([])
+const grados = ref([])
+const gradoSeleccionado = ref('')
+const loading = ref(true)
+const error = ref('')
+
+onMounted(async () => {
+    try {
+        // Cargar grados
+        const gradosResponse = await api.getGrados()
+        grados.value = gradosResponse.data
+
+        // Cargar todos los cuadernos
+        await cargarCuadernos()
+    } catch (err) {
+        error.value = 'Error al cargar los datos'
+        console.error(err)
+    } finally {
+        loading.value = false
+    }
+})
+
+async function cargarCuadernos() {
+    try {
+        loading.value = true
+        const idGrado = gradoSeleccionado.value || null
+        const response = await api.getCuadernos(idGrado)
+        cuadernos.value = response.data
+    } catch (err) {
+        error.value = 'Error al cargar los cuadernos'
+        console.error(err)
+    } finally {
+        loading.value = false
+    }
+}
+
+// Filtrar cuadernos cuando cambia el grado seleccionado
+async function cambiarFiltro() {
+    await cargarCuadernos()
+}
+
+const cuadernosFiltrados = computed(() => {
+    if (!gradoSeleccionado.value) {
+        return cuadernos.value
+    }
+    return cuadernos.value.filter(c => c.grado.id === parseInt(gradoSeleccionado.value))
+})
+
+function formatearFecha(fecha) {
+    const date = new Date(fecha)
+    return date.toLocaleDateString('es-ES')
+}
 </script>
+
 <template>
-    <form>
-        <select v-model="grado" id="grado">
-            <option v-for="grado in grados" :key="grado.id" :value="grado.nombre">
-                {{ grado.nombre }}
-            </option>
-        </select>
-    </form>
-    <table>
-        <tr v-for="entrega in entregas" :key="entrega.id">
-            <td>Alumno: {{ entrega.estancia.alumno.nombre }}</td>
-            <td>Grado: {{ entrega.grado.nombre }}</td>
-            <td>Cuaderno: <a :href="entrega.cuaderno.archivo_pdf" target="_blank">Ver Cuaderno</a></td>
-            <td>Fecha de subida: {{ entrega.fechaEntrega }}</td>
-        </tr>
-    </table>
+    <div>
+        <form>
+            <label for="grado">Filtrar por grado:</label>
+            <select v-model="gradoSeleccionado" id="grado" @change="cambiarFiltro">
+                <option value="">Todos los grados</option>
+                <option v-for="grado in grados" :key="grado.id_grado" :value="grado.id_grado">
+                    {{ grado.nombre }}
+                </option>
+            </select>
+        </form>
+
+        <div v-if="loading" class="loading">
+            <p>Cargando cuadernos...</p>
+        </div>
+
+        <div v-else-if="error" class="error">
+            <p>{{ error }}</p>
+        </div>
+
+        <div v-else-if="cuadernosFiltrados.length === 0" class="sin-datos">
+            <p>No hay cuadernos entregados</p>
+        </div>
+
+        <table v-else>
+            <thead>
+                <tr>
+                    <th>Alumno</th>
+                    <th>Grado</th>
+                    <th>Cuaderno</th>
+                    <th>Fecha de entrega</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="cuaderno in cuadernosFiltrados" :key="cuaderno.id">
+                    <td>{{ cuaderno.alumno.nombre }} {{ cuaderno.alumno.apellidos }}</td>
+                    <td>{{ cuaderno.grado.nombre }}</td>
+                    <td>
+                        <a :href="cuaderno.archivo_pdf" target="_blank" class="link-cuaderno">
+                            Ver Cuaderno
+                        </a>
+                    </td>
+                    <td>{{ formatearFecha(cuaderno.fecha_entrega) }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </template>
+
+<style scoped>
+form {
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+label {
+    font-weight: bold;
+}
+
+select {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+thead {
+    background-color: #007bff;
+    color: white;
+}
+
+th, td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+.link-cuaderno {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.link-cuaderno:hover {
+    text-decoration: underline;
+}
+
+.loading, .error, .sin-datos {
+    padding: 2rem;
+    text-align: center;
+}
+
+.error {
+    color: red;
+}
+
+.sin-datos {
+    color: #666;
+}
+</style>

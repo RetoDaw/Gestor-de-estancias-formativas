@@ -32,8 +32,8 @@ function cambiar(vista){
 
 async function verificarTipoUsuario() {
     try {
-        const esAlumno = await apiService.tipoUsuario('al');
-        const esTutorCentro = await apiService.tipoUsuario('tc');
+        const esAlumno = await apiService.tipoUsuario('alumno');
+        const esTutorCentro = await apiService.tipoUsuario('tutor_centro');
         
         esTutor.value = esTutorCentro || !esAlumno;
         

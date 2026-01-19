@@ -1,5 +1,5 @@
 // services/api.js
-import axios from 'axios';
+import axios from '@/axios';
 
 const api = axios.create({
     baseURL: 'http://localhost:8000/api',
@@ -77,10 +77,10 @@ export default {
     async tipoUsuario(tipo){
         let response;
         switch(tipo){
-            case "tc":
+            case "tutor_centro":
                 response = await api.get('/esTutorCentro');
                 break;
-            case "al":
+            case "alumno":
                 response = await api.get('/esAlumno');
                 break;
         }

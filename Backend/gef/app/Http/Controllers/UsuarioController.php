@@ -56,10 +56,7 @@ class UsuarioController extends Controller
         $user = $request->user();
         
         // Verificar que sea tutor
-        if (!$user->esTutorCentro() && !$user->esTutorEmpresa()) {
-            return response()->json(['message' => 'No autorizado'], 403);
-        }
-        
+
         // Obtener grados que tienen al menos un alumno
         $grados = Grado::whereHas('alumnos')
             ->get(['id_grado', 'nombre', 'familia', 'codigo'])

@@ -56,6 +56,43 @@ function formatearFecha(fecha) {
     const date = new Date(fecha)
     return date.toLocaleDateString('es-ES')
 }
+
+const cuadernoNotaActivo = ref(null);
+const notaCuaderno = ref(null);
+
+function mostrarInputNota(idCuaderno) {
+    cuadernoNotaActivo.value = idCuaderno
+    notaCuaderno.value = null
+}
+
+function cancelarNota() {
+    cuadernoNotaActivo.value = null
+    notaCuaderno.value = null
+}
+
+async function guardarNota(idCuaderno) {
+    if (notaCuaderno.value === null) {
+        alert('Tiene que haber valor para guardar la nota')
+        return
+    }
+
+    if (notaCuaderno.value < 0) {
+        alert('La nota tiene que ser de al menos 0')
+        return
+    }
+
+    if (notaCuaderno.value > 10) {
+        alert('La nota no puede ser mayor a 10')
+        return
+    }
+    try {
+        await api.guardarNotaCuaderno(idCuaderno, notaCuaderno.value)
+        cancelarNota()
+    } catch (e) {
+        console.error(e)
+        alert('Error al guardar la nota')
+    }
+}
 </script>
 
 <template>
@@ -89,6 +126,7 @@ function formatearFecha(fecha) {
                     <th>Grado</th>
                     <th>Cuaderno</th>
                     <th>Fecha de entrega</th>
+                    <th>Nota de cuaderno</th>
                 </tr>
             </thead>
             <tbody>
@@ -101,6 +139,20 @@ function formatearFecha(fecha) {
                         </a>
                     </td>
                     <td>{{ formatearFecha(cuaderno.fecha_entrega) }}</td>
+                    <td>
+                        <button v-if="cuadernoNotaActivo !== cuaderno.id"
+                        @click="mostrarInputNota(cuaderno.id)">
+                            Poner nota
+                        </button>
+
+                        <div v-else>
+                            <input type="number" min="0" max="10" required="Debes poner una nota"
+                            v-model.number="notaCuaderno" placeholder="Nota cuaderno"/>
+
+                            <button @click="guardarNota(cuaderno.id)">Guardar</button>
+                            <button @click="cancelarNota">Cancelar</button>
+                        </div>
+                    </td>
                 </tr>
             </tbody>
         </table>

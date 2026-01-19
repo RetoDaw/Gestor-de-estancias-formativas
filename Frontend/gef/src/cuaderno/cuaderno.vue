@@ -16,8 +16,8 @@ const esTutorCentro = ref(false)
 const esAlumno = ref(false)
 
 onMounted(async () => {
-    esTutorCentro.value = await api.tipoUsuario('tc')
-    esAlumno.value = await api.tipoUsuario('al')
+    esTutorCentro.value = await api.tipoUsuario('tutor_centro')
+    esAlumno.value = await api.tipoUsuario('alumno')
 })
 </script>
 <template>

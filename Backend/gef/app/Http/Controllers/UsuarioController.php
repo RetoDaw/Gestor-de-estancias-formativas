@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Alumno;
 use App\Models\Grado;
 use Illuminate\Validation\ValidationException;
+use Carbon\Carbon;
 
 class UsuarioController extends Controller
 {
@@ -91,9 +92,44 @@ class UsuarioController extends Controller
             return response()->json(['message' => 'ID de grado requerido'], 400);
         }
         
+        $ano = Carbon::now()->year;
+
         // Obtener alumnos del grado específico
         $alumnos = Alumno::with(['usuario', 'grado'])
             ->where('id_grado', $gradoId)
+            //Cuando mezclas AND y OR, SIEMPRE agrupar con una function
+            ->where(function ($query) use ($user, $ano) {
+
+                //Alumnos SIN estancia este año
+                /*
+                Lo mismo que:
+                NOT EXISTS (
+                    SELECT algo
+                    FROM estancia
+                    WHERE estancia.id_alumno = alumno.id_alumno
+                    AND YEAR(fecha_inicio) = 2026
+                )
+                */
+                $query->whereDoesntHave('estancias', function ($q) use ($ano) {
+                    $q->whereYear('fecha_inicio', $ano);
+                })
+
+                //O alumnos con estancia y el user actual es tutor
+                /*
+                Lo mimso que:
+                OR EXISTS (
+                    SELECT algo
+                    FROM estancia
+                    WHERE estancia.id_alumno = alumno.id_alumno
+                    AND YEAR(fecha_inicio) = 2026
+                    AND id_tutor_centro = :id_usuario_actual
+                )
+                */
+                ->orWhereHas('estancias', function ($q) use ($user, $ano) {
+                    $q->whereYear('fecha_inicio', $ano)
+                    ->where('id_tutor_centro', $user->id_usuario);
+                });
+            })
             ->get()
             ->map(function ($alumno) {
                 return [

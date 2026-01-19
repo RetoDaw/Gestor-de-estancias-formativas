@@ -31,7 +31,7 @@
       </div>
 
       <button type="submit">
-        Crear {{ usuario.tipo_usuario === 'tutor_empresa' ? 'Tutor de Empresa' : usuario.tipo_usuario === 'tutor_centro' ? 'Tutor de Centro' : usuario.tipo_usuario === 'admin' ? 'Administrador' : 'Alumno' }}
+        Crear {{ usuario.tipo_usuario === 'tutor_empresa' ? 'Tutor de Empresa' : usuario.tipo_usuario === 'tutor_centro' ? 'Tutor de Centro' : usuario.tipo_usuario === 'admin' ? 'Administrador' : usuario.tipo_usuario === 'alumno'  ? 'Alumno' : 'Usuario'}}
       </button>
     </form>
   </div>

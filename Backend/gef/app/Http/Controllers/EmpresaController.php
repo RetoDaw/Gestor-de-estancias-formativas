@@ -7,6 +7,10 @@ use App\Models\Empresa;
 
 class EmpresaController extends Controller
 {
+    public function index(){
+        $empresas = Empresa::all();
+        return response()->json($empresas);
+    }
     public function store(Request $request){
         $validatedData = $request->validate([
             'email' => 'required|email|unique:empresa,email',

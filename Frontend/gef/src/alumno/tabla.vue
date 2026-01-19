@@ -1,76 +1,31 @@
 <script setup>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 const props = defineProps({
     alumno: Object
-})
+});
 
-// Mapeo de nombres de campos a etiquetas amigables
-const etiquetas = {
-    'id_usuario': 'ID',
-    'email': 'Email',
-    'nombre': 'Nombre',
-    'apellidos': 'Apellidos',
-    'telefono': 'Teléfono',
-    'grado': 'Grado',
-    'familia': 'Familia Profesional',
-    'codigo_grado': 'Código del Grado'
-}
+// Lista SOLO los atributos que SÍ quieres mostrar
+const atributosMostrar = ['nombre', 'apellidos', 'email', 'telefono', 'id_grado'];
 
-// Orden de visualización preferido
-const ordenCampos = [
-    'nombre',
-    'apellidos', 
-    'email',
-    'telefono',
-    'grado',
-    'familia',
-    'codigo_grado',
-    'id_usuario'
-]
-
-// Computar los datos filtrados y ordenados
-const datosFormateados = computed(() => {
-    if (!props.alumno) return []
+const alumnoFiltrado = computed(() => {
+    if (!props.alumno) return {};
     
-    const datos = []
-    
-    // Primero agregar los campos en el orden preferido
-    ordenCampos.forEach(campo => {
-        if (props.alumno[campo] !== undefined && props.alumno[campo] !== null) {
-            datos.push({
-                campo: campo,
-                etiqueta: etiquetas[campo] || campo,
-                valor: props.alumno[campo]
-            })
+    const filtrado = {};
+    atributosMostrar.forEach(attr => {
+        if (props.alumno[attr] !== undefined) {
+            filtrado[attr] = props.alumno[attr];
         }
-    })
-    
-    // Luego agregar cualquier otro campo que no esté en el orden
-    Object.keys(props.alumno).forEach(campo => {
-        if (!ordenCampos.includes(campo) && 
-            props.alumno[campo] !== undefined && 
-            props.alumno[campo] !== null) {
-            datos.push({
-                campo: campo,
-                etiqueta: etiquetas[campo] || campo,
-                valor: props.alumno[campo]
-            })
-        }
-    })
-    
-    return datos
-})
+    });
+    return filtrado;
+});
 </script>
 
 <template>
-    <table class="table table-bordered">
-        <tbody>
-            <tr v-for="item in datosFormateados" :key="item.campo">
-                <td class="campo-nombre"><b>{{ item.etiqueta }}:</b></td>
-                <td class="campo-valor">{{ item.valor }}</td>
-            </tr>
-        </tbody>
+    <table>
+        <tr v-for="(valor, attr) in alumnoFiltrado" :key="attr">
+            <td><b class="nombre">{{ attr }}:</b> {{ valor }}</td>
+        </tr>
     </table>
 </template>
 

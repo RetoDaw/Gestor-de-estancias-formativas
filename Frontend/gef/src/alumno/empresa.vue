@@ -1,46 +1,29 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import "../assets/css/empresa.css";
+import axios from '@/axios';
 
 const empresa = ref(null);
 const tutorEmpresa = ref(null);
+const listaDatos = ref([]);
+const cargando = ref(true);
 
-const listaDatos = [
-    {
-        datosEmpresa: { 
-            cif: '20202000', 
-            nombre: 'Bilbomatica', 
-            poblacion: 'Vitoria-Gasteiz', 
-            telefono: '945929292', 
-            email: 'svarela@bilbomatica.es' 
-        },
-        datosTutor: { 
-            nombre: 'Santiago', 
-            apellidos: 'Varela Varela', 
-            email: 'svarela@bilbomatica.es', 
-            telefono: '' 
-        }
-    },
-    {
-        datosEmpresa: { 
-            cif: 'B9999999', 
-            nombre: 'Ibermática', 
-            poblacion: 'Donostia', 
-            telefono: '943000000', 
-            email: 'info@ibermatica.com' 
-        },
-        datosTutor: { 
-            nombre: 'Amaia', 
-            apellidos: 'Pérez', 
-            email: 'amaia@ibermatica.com', 
-            telefono: '600111222' 
-        }
+onMounted(async () => {
+    try {
+        const response = await axios.get('http://localhost:8000/api/empresas', {
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        });
+        listaDatos.value = Array.isArray(response.data) ? response.data : [];
+    } catch (error) {
+        console.error('Error al cargar empresas:', error);
+    } finally {
+        cargando.value = false;
     }
-];
+});
 
-function seleccionarEmpresa(evento){
-    
-    const encontrado = listaDatos.find(item => item.datosEmpresa.nombre === evento.target.value);
+function seleccionarEmpresa(evento) {
+    const nombreSeleccionado = evento.target.value;
+    const encontrado = listaDatos.value.find(item => item?.datosEmpresa?.nombre === nombreSeleccionado);
     
     if (encontrado) {
         empresa.value = encontrado.datosEmpresa;
@@ -50,44 +33,55 @@ function seleccionarEmpresa(evento){
 </script>
 
 <template>
-    <div v-if="!empresa" class="col-12">
-        <p>No hay ninguna empresa para ese alumno.</p>
-        <label>¿Desea añadir una empresa? </label>
-        
-        <select @change="seleccionarEmpresa">
-            <option selected disabled>-- Selecciona una empresa --</option>
-            <option v-for="empresa in listaDatos" :key="empresa.datosEmpresa.cif">
-                {{ empresa.datosEmpresa.nombre }}
-            </option>
-        </select>
-    </div>
+    <div class="main-wrapper">
+        <div v-if="cargando">Cargando...</div>
 
-    <template v-else>
-        <div id="empresa" class="col-6">
-            <h1>Empresa</h1>
-            <table>
-                <tbody>
-                    <tr v-for="(dato, nombre) in empresa" :key="nombre">
-                        <td><b class="nombre">{{ nombre }}: </b> 
-                            <span v-if="dato">{{ dato }}</span>
-                            <span v-else class="noDato">No hay registros</span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <div v-else-if="!empresa" class="col-12">
+            <p>No hay ninguna empresa seleccionada.</p>
+            
+            <select @change="seleccionarEmpresa">
+                <option :value="null" selected disabled>-- Selecciona una empresa --</option>
+                <template v-for="(item, index) in listaDatos">
+                    <option 
+                        v-if="item && item.datosEmpresa" 
+                        :key="item.datosEmpresa.id || index" 
+                        :value="item.datosEmpresa.nombre"
+                    >
+                        {{ item.datosEmpresa.nombre }}
+                    </option>
+                </template>
+            </select>
         </div>
-        <div id="tutor" class="col-6">
-            <h1>Tutor de la empresa</h1>
-            <table>
-                <tbody>
-                    <tr v-for="(dato, nombre) in tutorEmpresa" :key="nombre">
-                        <td><b class="nombre">{{ nombre }}: </b> 
-                            <span v-if="dato">{{ dato }}</span>
-                            <span v-else class="noDato">No hay registros</span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+
+        <div v-else class="row">
+            <div class="col-6">
+                <h1>Empresa</h1>
+                <table>
+                    <tbody>
+                        <tr v-for="(valor, clave, index) in empresa" :key="'emp-' + index">
+                            <td>
+                                <b>{{ clave }}: </b>
+                                <span>{{ valor || 'No hay registros' }}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button @click="empresa = null">Cambiar empresa</button>
+            </div>
+
+            <div v-if="tutorEmpresa" class="col-6">
+                <h1>Tutor</h1>
+                <table>
+                    <tbody>
+                        <tr v-for="(valor, clave, index) in tutorEmpresa" :key="'tut-' + index">
+                            <td>
+                                <b>{{ clave }}: </b>
+                                <span>{{ valor || 'No hay registros' }}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </template>
+    </div>
 </template>

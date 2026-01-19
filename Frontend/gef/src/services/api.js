@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://localhost:8000/api', // Cambia esto a tu URL de Laravel
+    baseURL: 'http://localhost:8000/api',
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
@@ -85,5 +85,26 @@ export default {
                 break;
         }
         return response?.data ?? false;
+    },
+
+    // alumnos
+    // Obtener datos del usuario autenticado con grado
+    getAuthUser() {
+        return api.get('/usuario/me');
+    },
+
+    // Listar grados que tienen alumnos (solo para tutores)
+    listarGradosConAlumnos() {
+        return api.get('/grados-con-alumnos');
+    },
+
+    // Listar alumnos por grado (solo para tutores)
+    listarAlumnosPorGrado(idGrado) {
+        return api.get('/alumnos-por-grado', { params: { id_grado: idGrado } });
+    },
+
+    // Obtener datos de un alumno específico
+    getAlumno(userId) {
+        return api.get('/alumno', { params: { user_id: userId } });
     }
 };

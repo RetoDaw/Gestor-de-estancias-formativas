@@ -14,11 +14,19 @@ use App\Http\Controllers\CompetenciaTecnicaController;
 use App\Http\Controllers\SeguimientoController;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::middleware('auth:sanctum')->group(function () {
+    // Usuario autenticado
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+    
+    // manejo de alumnos
+    Route::get('/usuario/me', [UsuarioController::class, 'getAuthUser']);
+    Route::get('/grados-con-alumnos', [UsuarioController::class, 'listarGradosConAlumnos']);
+    Route::get('/alumnos-por-grado', [UsuarioController::class, 'listarAlumnosPorGrado']);
+    Route::get('/alumno', [UsuarioController::class, 'getAlumno']);
 
-    //Tipo de usuario
+    // tipos de usuario
     Route::get('/esTutorCentro', [UsuarioController::class, 'esTutorCentro']);
     Route::get('/esAlumno', [UsuarioController::class, 'esAlumno']);
 

@@ -42,10 +42,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/entregas', [EntregaController::class, 'index']);
     Route::get('/cuadernos', [EntregaController::class, 'verCuadernos']);
     Route::post('/cuadernos', [EntregaController::class, 'subirCuaderno']);
-    
+    Route::post('/asignar-empresa', [EmpresaController::class, 'asignarEmpresa']);
     Route::post('/guardarEmpresa', [EmpresaController::class, 'store']);
     Route::get('/empresas', [EmpresaController::class, 'index']);
-    
+    Route::get('/empresa_alumno', [EmpresaController::class, 'getEmpresaAlumno']);    
     Route::get('/mostrarSeguimientos', [SeguimientoController::class, 'index']);
     Route::get('/seguimientos/{id}', [SeguimientoController::class, 'show']);
     Route::post('/guardarSeguimiento', [SeguimientoController::class, 'store']);

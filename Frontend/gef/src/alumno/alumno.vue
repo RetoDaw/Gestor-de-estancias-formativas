@@ -70,7 +70,7 @@ async function onGradoChange() {
     if (!gradoSeleccionado.value) {
         listaAlumnos.value = [];
         alumnoSeleccionado.value = null;
-        // Limpiar datos del alumno
+
         Object.keys(alumno).forEach(key => delete alumno[key]);
         return;
     }
@@ -129,7 +129,7 @@ async function cargarDatosAlumno(userId = null) {
 async function onAlumnoChange() {
     if (alumnoSeleccionado.value) {
         await cargarDatosAlumno(alumnoSeleccionado.value);
-        // Resetear la vista activa al cambiar de alumno
+
         vistaActiva.value = null;
     }
 }
@@ -141,12 +141,10 @@ onMounted(() => {
 
 <template>
     <div class="row">
-        <!-- Mensaje de error -->
         <div v-if="error" class="alert alert-danger" role="alert">
             {{ error }}
         </div>
 
-        <!-- Mensaje de carga inicial -->
         <div v-if="cargando && !esTutor" class="text-center">
             <div class="spinner-border" role="status">
                 <span class="visually-hidden">Cargando...</span>
@@ -154,81 +152,49 @@ onMounted(() => {
             <p>Cargando información...</p>
         </div>
 
-        <!-- Contenido principal -->
         <template v-else>
             <div id="principal" class="row col-4">
-                <!-- Selectores para tutores (Grado → Alumno) -->
                 <div v-if="esTutor" class="col-12 mb-3">
-                    <!-- Selector de Grado -->
                     <div class="mb-3">
                         <label for="selectorGrado" class="form-label">
                             <strong>1. Seleccionar Grado:</strong>
                         </label>
-                        <select 
-                            id="selectorGrado" 
-                            class="form-select" 
-                            v-model="gradoSeleccionado"
-                            @change="onGradoChange"
-                        >
-                            <option :value="null">-- Seleccione un grado --</option>
-                            <option 
-                                v-for="grado in listaGrados" 
-                                :key="grado.id_grado" 
-                                :value="grado.id_grado"
-                            >
+                        <select id="selectorGrado" class="form-select" v-model="gradoSeleccionado" @change="onGradoChange">
+                            <option :value="null"> Seleccione un grado </option>
+                            <option v-for="grado in listaGrados" :key="grado.id_grado" :value="grado.id_grado">
                                 {{ grado.nombre_completo }}
                             </option>
                         </select>
                     </div>
 
-                    <!-- Selector de Alumno -->
                     <div v-if="gradoSeleccionado" class="mb-3">
                         <label for="selectorAlumno" class="form-label">
                             <strong>2. Seleccionar Alumno:</strong>
                         </label>
                         
-                        <!-- Spinner mientras carga alumnos -->
                         <div v-if="cargandoAlumnos" class="text-center py-2">
                             <div class="spinner-border spinner-border-sm" role="status">
                                 <span class="visually-hidden">Cargando alumnos...</span>
                             </div>
                         </div>
                         
-                        <!-- Selector de alumnos -->
-                        <select 
-                            v-else
-                            id="selectorAlumno" 
-                            class="form-select" 
-                            v-model="alumnoSeleccionado"
-                            @change="onAlumnoChange"
-                            :disabled="listaAlumnos.length === 0"
-                        >
-                            <option v-if="listaAlumnos.length === 0" :value="null">
-                                -- No hay alumnos en este grado --
-                            </option>
-                            <option 
-                                v-for="alum in listaAlumnos" 
-                                :key="alum.id_usuario" 
-                                :value="alum.id_usuario"
-                            >
+                        <select v-else id="selectorAlumno" class="form-select" v-model="alumnoSeleccionado" @change="onAlumnoChange" :disabled="listaAlumnos.length === 0">
+                            <option v-if="listaAlumnos.length === 0" :value="null"> No hay alumnos en este grado </option>
+                            <option v-for="alum in listaAlumnos" :key="alum.id_usuario" :value="alum.id_usuario">
                                 {{ alum.nombre_completo }}
                             </option>
                         </select>
                     </div>
                 </div>
 
-                <!-- Información del alumno -->
                 <div v-if="alumno.nombre" id="info" class="col-12">
                     <h1>Información del alumno {{ alumno.nombre }}</h1>
                     <Tabla :alumno="alumno"/>
                 </div>
 
-                <!-- Mensaje si no hay alumno seleccionado (solo tutores) -->
                 <div v-else-if="esTutor" class="col-12 text-center text-muted">
                     <p>Seleccione un grado y un alumno para ver la información</p>
                 </div>
-
-                <!-- Opciones (solo si hay alumno cargado) -->
                 <div v-if="alumno.nombre" id="opciones" class="row col mt-3">
                     <button class="col-5 mb-2" @click="cambiar('calendario')">Ver calendario</button>
                     <button class="col-5 ms-2 mb-2" @click="cambiar('empresa')">Ver empresa</button>
@@ -237,10 +203,9 @@ onMounted(() => {
                 </div>
             </div>
 
-            <!-- Vistas secundarias -->
             <div id="secundario" class="col-8 row">
                 <Calendario v-if="vistaActiva === 'calendario'"/>
-                <Empresa v-if="vistaActiva === 'empresa'"/>
+                <Empresa v-if="vistaActiva === 'empresa' && alumno.id_usuario" :alumnoId="alumno.id_usuario"/>
                 <Notas v-if="vistaActiva === 'notas'"/>
                 <Seguimiento v-if="vistaActiva === 'seguimiento'"/>
             </div>
@@ -248,23 +213,3 @@ onMounted(() => {
     </div>
 </template>
 
-<style scoped>
-.spinner-border {
-    width: 3rem;
-    height: 3rem;
-}
-
-.form-label {
-    margin-bottom: 0.5rem;
-    color: #333;
-}
-
-.form-select {
-    cursor: pointer;
-}
-
-.form-select:disabled {
-    cursor: not-allowed;
-    background-color: #e9ecef;
-}
-</style>

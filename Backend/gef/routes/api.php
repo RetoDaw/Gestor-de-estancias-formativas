@@ -11,6 +11,8 @@ use App\Http\Controllers\EntregaController;
 use App\Http\Controllers\GradoController;
 use App\Http\Controllers\CompetenciaTecnicaController;
 use App\Http\Controllers\SeguimientoController;
+use App\Http\Controllers\EstanciaController;
+
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
@@ -50,4 +52,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/seguimientos/{id}', [SeguimientoController::class, 'show']);
     Route::post('/guardarSeguimiento', [SeguimientoController::class, 'store']);
     Route::delete('/seguimientos/{id}', [SeguimientoController::class, 'delete']);
+
+    // Horario/Calendario
+    Route::get('/horario-alumno', [EstanciaController::class, 'getHorarioAlumno']);
+    Route::post('/horario', [EstanciaController::class, 'crearHorario']);
+    Route::put('/horario/{idEstancia}', [EstanciaController::class, 'actualizarHorario']);
 });

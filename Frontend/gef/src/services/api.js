@@ -106,5 +106,19 @@ export default {
     // Obtener datos de un alumno específico
     getAlumno(userId) {
         return api.get('/alumno', { params: { user_id: userId } });
-    }
+    },
+
+    // Horario/Calendario
+    getHorarioAlumno(userId = null) {
+        const params = userId ? { user_id: userId } : {};
+        return api.get('/horario-alumno', { params });
+    },
+
+    crearHorario(data) {
+        return api.post('/horario', data);
+    },
+
+    actualizarHorario(idEstancia, data) {
+        return api.put(`/horario/${idEstancia}`, data);
+    },
 };

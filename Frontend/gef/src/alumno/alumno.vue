@@ -239,7 +239,10 @@ onMounted(() => {
 
             <!-- Vistas secundarias -->
             <div id="secundario" class="col-8 row">
-                <Calendario v-if="vistaActiva === 'calendario'"/>
+                <Calendario 
+                    v-if="vistaActiva === 'calendario'"
+                    :alumno-id="alumno.id_usuario"
+                />
                 <Empresa v-if="vistaActiva === 'empresa'"/>
                 <Notas v-if="vistaActiva === 'notas'"/>
                 <Seguimiento v-if="vistaActiva === 'seguimiento'"/>

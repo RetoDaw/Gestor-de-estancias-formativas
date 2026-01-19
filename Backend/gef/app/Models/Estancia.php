@@ -65,7 +65,7 @@ class Estancia extends Model
     /**
      * Relación 1:N - Horarios semanales de la estancia
      */
-    public function horariosSemanales()
+    public function horariosSemales ()
     {
         return $this->hasMany(HorarioSemanal::class, 'id_estancia', 'id_estancia');
     }

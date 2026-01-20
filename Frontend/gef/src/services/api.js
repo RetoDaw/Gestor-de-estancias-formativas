@@ -114,6 +114,7 @@ export default {
 
     actualizarHorario(idEstancia, data) {
         return api.put(`/horario/${idEstancia}`, data);
+    },
    getEmpresas() {
     return api.get('/empresas');
     },
@@ -125,4 +126,4 @@ export default {
     asignarEmpresa(datos) {
         return api.post('/asignar-empresa', datos);
     },
-};
+}

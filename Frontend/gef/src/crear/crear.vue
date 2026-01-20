@@ -31,7 +31,7 @@ export default {
       token: localStorage.getItem('token'),
       empresa: { nombre_empresa: '', cif: '', poblacion: '', email: '', telefono: '' },
       usuario: { nombre: '', apellidos: '', email: '', password: '', tipo_usuario: '', id_grado: '', telefono: '' },
-      ra: { descripcion: '', id_grado: '', competencias: [''] },
+      ra: { descripcion: '', id_grado: '', asignaturas: [''] },
       grados: [],
       competencia: { descripcion: '', id_grado: '' }
     };

@@ -14,14 +14,14 @@ class ResultadoAprendizajeController extends Controller
     {
         $request->validate([
             'descripcion' => 'required|string',
-            'grado_id' => 'required|integer',
+            'id_grado' => 'required|integer',
             'competencias' => 'required|array',
             'competencias.*.descripcion' => 'required|string',
         ]);
         DB::transaction(function () use ($request){
             $ra = ResultadoAprendizaje::create([
                 'descripcion' => $request->descripcion,
-                'grado_id' => $request->grado_id,
+                'id_grado' => $request->id_grado,
             ]);
             foreach ($request->competencias as $compData) {
                 Competencia::create([

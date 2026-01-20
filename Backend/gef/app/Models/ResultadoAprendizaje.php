@@ -11,10 +11,11 @@ class ResultadoAprendizaje extends Model
 
     protected $table = 'resultado_aprendizaje';
     protected $primaryKey = 'id_resultado';
-
+    public $incrementing = true;    
     protected $fillable = [
         'id_asignatura',
-        'descripcion'
+        'descripcion',
+        'id_grad0o'
     ];
 
     //Relaciones

@@ -28,19 +28,3 @@ const alumnoFiltrado = computed(() => {
         </tr>
     </table>
 </template>
-
-<style scoped>
-.campo-nombre {
-    width: 40%;
-    background-color: #f8f9fa;
-    font-weight: bold;
-}
-
-.campo-valor {
-    width: 60%;
-}
-
-.table {
-    margin-bottom: 0;
-}
-</style>

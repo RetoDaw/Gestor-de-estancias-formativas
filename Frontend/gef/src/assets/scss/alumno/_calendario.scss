@@ -1,22 +1,59 @@
-#calendario{
-    table {
-        border-collapse: separate;        
+.horario-container {
+  padding: 20px;
+}
+
+.formulario-horario {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.dia-horario {
+  background-color: white;
+}
+
+.franja-horaria {
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+#calendario {
+  table {
+    width: 100%;
+    border-collapse: separate;
+
+    tbody {
+      tr {
+        td {
+          border: 0.2em solid black;
+          padding: 0.4em;
+          text-transform: capitalize;
+        }
+
+        &:first-child {
+          td:first-child {
+            border-top-left-radius: 0.5em;
+          }
+          td:last-child {
+            border-top-right-radius: 0.5em;
+          }
+        }
+
+        &:last-child {
+          td:first-child {
+            border-bottom-left-radius: 0.5em;
+          }
+          td:last-child {
+            border-bottom-right-radius: 0.5em;
+          }
+        }
+      }
     }
-    table tbody tr td{
-        border: .2em solid black;
-        padding: .4em;
-        text-transform: capitalize;
-    }
-    table tbody tr:first-child td:first-child {
-        border-top-left-radius: .5em;
-    }
-    table tbody tr:first-child td:last-child {
-        border-top-right-radius: .5em;
-    }
-    table tbody tr:last-child td:first-child {
-        border-bottom-left-radius: .5em;
-    }
-    table tbody tr:last-child td:last-child {
-        border-bottom-right-radius: .5em;
-    }
+  }
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
 }

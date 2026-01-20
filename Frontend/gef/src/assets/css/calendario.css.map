@@ -1,1 +1,1 @@
-{"version":3,"sourceRoot":"","sources":["../scss/_calendario.scss"],"names":[],"mappings":"AACI;EACI;;AAEJ;EACI;EACA;EACA;;AAEJ;EACI;;AAEJ;EACI;;AAEJ;EACI;;AAEJ;EACI","file":"calendario.css"}
+{"version":3,"sourceRoot":"","sources":["../scss/alumno/_calendario.scss"],"names":[],"mappings":"AAAA;EACE;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;;;AAGF;EACE;EACA;EACA;;;AAIA;EACE;EACA;;AAII;EACE;EACA;EACA;;AAIA;EACE;;AAEF;EACE;;AAKF;EACE;;AAEF;EACE;;;AAQZ;EACE;EACA","file":"calendario.css"}

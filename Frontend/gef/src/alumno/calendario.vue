@@ -356,38 +356,3 @@ onMounted(async () => {
         </div>
     </div>
 </template>
-
-<style scoped>
-.horario-container {
-    padding: 20px;
-}
-
-.formulario-horario {
-    background-color: #f8f9fa;
-    padding: 20px;
-    border-radius: 8px;
-}
-
-.dia-horario {
-    background-color: white;
-}
-
-.franja-horaria {
-    background-color: #f8f9fa;
-    padding: 10px;
-    border-radius: 4px;
-}
-
-#calendario table {
-    width: 100%;
-}
-
-#calendario td {
-    padding: 10px;
-}
-
-.spinner-border {
-    width: 3rem;
-    height: 3rem;
-}
-</style>

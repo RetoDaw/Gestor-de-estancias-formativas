@@ -1,4 +1,25 @@
+.horario-container {
+  padding: 20px;
+}
+
+.formulario-horario {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.dia-horario {
+  background-color: white;
+}
+
+.franja-horaria {
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 4px;
+}
+
 #calendario table {
+  width: 100%;
   border-collapse: separate;
 }
 #calendario table tbody tr td {
@@ -17,6 +38,11 @@
 }
 #calendario table tbody tr:last-child td:last-child {
   border-bottom-right-radius: 0.5em;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
 }
 
 /*# sourceMappingURL=calendario.css.map */

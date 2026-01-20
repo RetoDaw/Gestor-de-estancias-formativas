@@ -57,4 +57,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/horario-alumno', [EstanciaController::class, 'getHorarioAlumno']);
     Route::post('/horario', [EstanciaController::class, 'crearHorario']);
     Route::put('/horario/{idEstancia}', [EstanciaController::class, 'actualizarHorario']);
+
+    Route::get(
+        '/alumnos/{idAlumno}/asignaturas/{idAsignatura}/nota-final',
+        [AlumnoController::class, 'notaFinal']
+    );
+    Route::get(
+        '/alumnos/{idAlumno}/notas',
+        [AlumnoController::class, 'getNotas']
+    );
 });

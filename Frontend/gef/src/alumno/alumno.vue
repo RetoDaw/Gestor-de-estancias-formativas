@@ -208,8 +208,8 @@ onMounted(() => {
                     v-if="vistaActiva === 'calendario'"
                     :alumno-id="alumno.id_usuario"
                 />
-                <Empresa v-if="vistaActiva === 'empresa'"/>
-                <Notas v-if="vistaActiva === 'notas'"/>
+                <Empresa v-if="vistaActiva === 'empresa'" :alumno-id="alumno.id_usuario"/>
+                <Notas v-if="vistaActiva === 'notas'" :id-alumno="alumno.id_usuario"/>
                 <Seguimiento v-if="vistaActiva === 'seguimiento'"/>
             </div>
         </template>

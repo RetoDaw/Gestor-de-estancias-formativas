@@ -31,15 +31,17 @@ async function calcularNota() {
     if (!props.idAlumno) return
 
     for (const asignatura of notas.value) {
-        try {
-            const response = await api.getNotaFinalAlumno(
-                props.idAlumno,
-                asignatura.id_asignatura
-            )
+        if(asignatura.nota !== null){
+            try {
+                const response = await api.getNotaFinalAlumno(
+                    props.idAlumno,
+                    asignatura.id_asignatura
+                )
 
-            asignatura.nota = response.data.nota_final
-        } catch (err) {
-            asignatura.nota = ''
+                asignatura.nota = response.data.nota_final
+            } catch (err) {
+                asignatura.nota = ''
+            }
         }
     }
 }
@@ -66,6 +68,10 @@ onMounted(() => {
             <tr v-for="asignatura in notas" :key="asignatura.nombre">
                 <td>{{ asignatura.nombre }}</td>
                 <td>{{ mostrarDato(asignatura.nota) }}</td>
+                <td>{{ mostrarDato(asignatura.nota) }}</td>
+                <td>{{ mostrarDato(asignatura.nota) }}</td>
+                <td>{{ mostrarDato(asignatura.nota) }}</td>
+                <td><button @click="cambiarNota()">Cambiar nota</button></td>
             </tr>
         </tbody>
     </table>

@@ -180,7 +180,7 @@ onMounted(() => {
         </div>
 
         <template v-else>
-            <div id="principal" class="row col-4">
+            <div id="principal" class="row" :class="vistaActiva === 'seguimiento' ? 'col-8' : 'col-4'">
                 <div v-if="esTutor" class="col-12 mb-3">
                     <div class="mb-3">
                         <label for="selectorGrado" class="form-label">
@@ -240,7 +240,7 @@ onMounted(() => {
                 </div>
             </div>
 
-            <div id="secundario" class="col-8 row">
+            <div id="secundario" class="row" :class="vistaActiva === 'seguimiento' ? 'col-12' : 'col-8'">
                 <Calendario v-if="vistaActiva === 'calendario'" :alumno-id="alumno.id_usuario"/>
                 <Empresa v-if="vistaActiva === 'empresa'" :alumno-id="alumno.id_usuario"/>
                 <Notas v-if="vistaActiva === 'notas'" :id-alumno="alumno.id_usuario"/>

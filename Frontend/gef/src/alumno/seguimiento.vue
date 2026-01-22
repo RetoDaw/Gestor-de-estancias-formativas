@@ -285,9 +285,9 @@ export default {
                 <input v-else type="time" v-model="seguimiento.hora" />
               </td>
 
-              <td>
+              <td class="accion">
                 <span v-if="!seguimiento.editando">{{ mostrarDato(seguimiento.accion) }}</span>
-                <input v-else type="text" v-model="seguimiento.accion" />
+                <textarea v-else type="text" v-model="seguimiento.accion" />
               </td>
 
               <td>

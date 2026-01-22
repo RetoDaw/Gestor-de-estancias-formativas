@@ -116,6 +116,9 @@ $color-fondo-hover: #f8f9fa;
         &:last-child {
           border-bottom: none;
         }
+        .accion{
+          width: 300px;
+        }
       }
 
       td {
@@ -125,7 +128,7 @@ $color-fondo-hover: #f8f9fa;
         font-size: 0.95rem;
 
         // Inputs y Selects dentro de la tabla
-        input, select {
+        input, select, textarea {
           width: 100%;
           padding: 6px 8px;
           border: 1px solid #ced4da;

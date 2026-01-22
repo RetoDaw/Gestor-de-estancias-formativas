@@ -90,13 +90,16 @@
 .seguimiento-container table tbody tr:last-child {
   border-bottom: none;
 }
+.seguimiento-container table tbody tr .accion {
+  width: 300px;
+}
 .seguimiento-container table tbody td {
   padding: 12px 15px;
   vertical-align: middle;
   color: #555;
   font-size: 0.95rem;
 }
-.seguimiento-container table tbody td input, .seguimiento-container table tbody td select {
+.seguimiento-container table tbody td input, .seguimiento-container table tbody td select, .seguimiento-container table tbody td textarea {
   width: 100%;
   padding: 6px 8px;
   border: 1px solid #ced4da;
@@ -104,7 +107,7 @@
   font-size: 0.9rem;
   box-sizing: border-box;
 }
-.seguimiento-container table tbody td input:focus, .seguimiento-container table tbody td select:focus {
+.seguimiento-container table tbody td input:focus, .seguimiento-container table tbody td select:focus, .seguimiento-container table tbody td textarea:focus {
   outline: none;
   border-color: #007bff;
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);

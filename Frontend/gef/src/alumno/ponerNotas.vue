@@ -67,7 +67,7 @@ const guardarNotas = async () => {
         alert('Notas guardadas exitosamente');
     } catch (err) {
         console.error('Error completo:', err);
-        alert('Error al guardar las notas');
+        alert('Estas notas ya han sido puestas');
     }
 };
 onMounted(() => {

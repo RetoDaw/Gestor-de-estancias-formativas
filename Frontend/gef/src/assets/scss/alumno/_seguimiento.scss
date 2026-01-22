@@ -1,100 +1,186 @@
-// --- Variables ---
-$primary-color: #34495e; // Azul oscuro cabecera
-$success-color: #27ae60; // Verde
-$warning-color: #f39c12; // Naranja
-$danger-color: #c0392b;  // Rojo
-$light-bg: #f9f9f9;
-$border-color: #ddd;
+// Variables colores
+$color-nuevo: #92557f;       
+$color-header: #007bff;      
+$color-guardar: #c0c0c0;    
+$color-editar: #c0c0c0;     
+$color-eliminar: #f55968;    
+$color-borde: #dee2e6;
+$color-fondo-hover: #f8f9fa;
 
-// --- Estilos Generales ---
-h1 {
-  color: $primary-color;
-  margin-bottom: 20px;
-  font-family: 'Arial', sans-serif;
-}
- 
-// Botón "Nuevo Seguimiento"
-.btn-nuevo {
-  background-color: #1b6dac;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  margin-bottom: 20px;
-  transition: background 0.2s;
-} 
+.seguimiento-container {
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
 
-// --- Tabla ---
-#seguimiento {
-  width: 100%;
-  overflow-x: auto;
+  h1 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-size: 1.75rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+  }
 
+  // Estilos para las alertas (Bootstrap-like)
+  .alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+
+    &.alert-warning {
+      color: #856404;
+      background-color: #fff3cd;
+      border-color: #ffeeba;
+    }
+    &.alert-danger {
+      color: #721c24;
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+    }
+    &.alert-info {
+      color: #0c5460;
+      background-color: #d1ecf1;
+      border-color: #bee5eb;
+    }
+  }
+
+  // Botón Nuevo Seguimiento 
+  .btn-nuevo {
+    background-color: $color-nuevo;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: background-color 0.2s, transform 0.1s;
+    margin-bottom: 20px;
+
+    &:hover {
+      background-color: darken($color-nuevo, 10%);
+    }
+
+    &:active {
+      transform: translateY(1px);
+    }
+  }
+
+  // Loader
+  .spinner-border {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    border: 0.25em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spinner-border .75s linear infinite;
+    color: $color-header;
+  }
+
+  // Tabla
   table {
     width: 100%;
     border-collapse: collapse;
-    font-family: 'Arial', sans-serif;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    overflow: hidden; 
 
+    // Cabecera 
     thead {
-      background-color: $primary-color;
+      background-color: $color-header;
       color: white;
-      
+
       th {
-        padding: 12px 15px;
+        padding: 15px;
         text-align: left;
         font-weight: 600;
         text-transform: uppercase;
         font-size: 0.85rem;
+        letter-spacing: 0.5px;
       }
     }
 
+    // Cuerpo de la tabla
     tbody {
       tr {
-        border-bottom: 1px solid $border-color;
+        border-bottom: 1px solid $color-borde;
+        transition: background-color 0.2s;
 
-        &:nth-of-type(even) {
-          background-color: $light-bg;
+        &:hover {
+          background-color: $color-fondo-hover;
         }
 
-        td {
-          padding: 10px 15px;
-          vertical-align: middle;
-          color: #333;
-          font-size: 0.95rem;
+        &:last-child {
+          border-bottom: none;
+        }
+      }
 
-          input, select {
-            width: 100%;
-            padding: 6px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            
-            &:focus {
-              outline: none;
-              border-color: $primary-color;
-            }
-          }
+      td {
+        padding: 12px 15px;
+        vertical-align: middle;
+        color: #555;
+        font-size: 0.95rem;
 
-          button {
-            padding: 6px 12px;
-            margin-right: 5px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            color: white;
-            font-size: 0.85rem;
-            transition: opacity 0.2s;
+        // Inputs y Selects dentro de la tabla
+        input, select {
+          width: 100%;
+          padding: 6px 8px;
+          border: 1px solid #ced4da;
+          border-radius: 4px;
+          font-size: 0.9rem;
+          box-sizing: border-box; 
 
-            &:hover { opacity: 0.8; }
-
-            // Clases específicas
-            &.btn-editar { background-color: $warning-color; }
-            &.btn-guardar { background-color: $success-color; }
-            &.btn-eliminar { background-color: $danger-color; }
+          &:focus {
+            outline: none;
+            border-color: $color-header;
+            box-shadow: 0 0 0 2px rgba($color-header, 0.25);
           }
         }
       }
     }
   }
+
+  // Botones de acción dentro de la tabla
+  button {
+    padding: 6px 12px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: opacity 0.2s;
+    color: white; 
+
+    &:hover {
+      opacity: 0.85;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    // Botón Editar 
+    &.btn-editar {
+      background-color: $color-editar;
+      color: #212529;
+    }
+
+    // Botón Guardar
+    &.btn-guardar {
+      background-color: $color-guardar;
+    }
+
+    // Botón Eliminar
+    &.btn-eliminar {
+      background-color: $color-eliminar;
+    }
+  }
+}
+
+// Animación para el spinner
+@keyframes spinner-border {
+  to { transform: rotate(360deg); }
 }

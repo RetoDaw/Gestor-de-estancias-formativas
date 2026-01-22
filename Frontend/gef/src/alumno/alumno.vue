@@ -26,6 +26,10 @@ const cargando = ref(true);
 const cargandoAlumnos = ref(false);
 const error = ref(null);
 
+// Estado para la estancia
+const idEstanciaActual = ref(null);
+const cargandoEstancia = ref(false);
+
 function cambiar(vista){
     vistaActiva.value = vistaActiva.value === vista ? null : vista;
 }
@@ -70,6 +74,7 @@ async function onGradoChange() {
     if (!gradoSeleccionado.value) {
         listaAlumnos.value = [];
         alumnoSeleccionado.value = null;
+        idEstanciaActual.value = null;
 
         Object.keys(alumno).forEach(key => delete alumno[key]);
         return;
@@ -86,6 +91,7 @@ async function onGradoChange() {
             await cargarDatosAlumno(alumnoSeleccionado.value);
         } else {
             alumnoSeleccionado.value = null;
+            idEstanciaActual.value = null;
             // Limpiar datos del alumno
             Object.keys(alumno).forEach(key => delete alumno[key]);
         }
@@ -118,6 +124,9 @@ async function cargarDatosAlumno(userId = null) {
         
         // Asignar nuevos datos
         Object.assign(alumno, response.data);
+
+        // Cargar la estancia del alumno
+        await cargarEstanciaAlumno(alumno.id_usuario);
     } catch (err) {
         console.error('Error al cargar datos del alumno:', err);
         error.value = 'Error al cargar los datos del alumno';
@@ -126,10 +135,28 @@ async function cargarDatosAlumno(userId = null) {
     }
 }
 
+async function cargarEstanciaAlumno(idAlumno) {
+    try {
+        cargandoEstancia.value = true;
+        const response = await apiService.getEstanciaAlumno(idAlumno);
+        
+        if (response.data && response.data.id_estancia) {
+            idEstanciaActual.value = response.data.id_estancia;
+        } else {
+            idEstanciaActual.value = null;
+        }
+    } catch (err) {
+        console.error('Error al cargar estancia del alumno:', err);
+        idEstanciaActual.value = null;
+        // No mostramos error al usuario porque es normal que algunos alumnos no tengan estancia
+    } finally {
+        cargandoEstancia.value = false;
+    }
+}
+
 async function onAlumnoChange() {
     if (alumnoSeleccionado.value) {
         await cargarDatosAlumno(alumnoSeleccionado.value);
-
         vistaActiva.value = null;
     }
 }
@@ -195,12 +222,21 @@ onMounted(() => {
                 <div v-else-if="esTutor" class="col-12 text-center text-muted">
                     <p>Seleccione un grado y un alumno para ver la información</p>
                 </div>
+                
                 <div v-if="alumno.nombre" id="opciones" class="row col mt-3">
                     <button class="col-5 mb-2" @click="cambiar('calendario')">Ver calendario</button>
                     <button class="col-5 ms-2 mb-2" @click="cambiar('empresa')">Ver empresa</button>
                     <button class="col-5" @click="cambiar('notas')">Ver notas</button>
-                    <button class="col-5 ms-2" @click="cambiar('seguimiento')">Ver seguimiento</button>
+                    <button class="col-5 ms-2" @click="cambiar('seguimiento')" :disabled="!idEstanciaActual">
+                        Ver seguimiento
+                    </button>
                     <button class="col-5 mt-2" @click="cambiar('ponerNotas')">Poner notas</button>
+                    
+                    <div v-if="!idEstanciaActual && alumno.nombre" class="col-12 mt-2">
+                        <small class="text-muted">
+                            * El alumno no tiene una estancia asignada para ver seguimientos
+                        </small>
+                    </div>
                 </div>
             </div>
 
@@ -208,11 +244,10 @@ onMounted(() => {
                 <Calendario v-if="vistaActiva === 'calendario'" :alumno-id="alumno.id_usuario"/>
                 <Empresa v-if="vistaActiva === 'empresa'" :alumno-id="alumno.id_usuario"/>
                 <Notas v-if="vistaActiva === 'notas'" :id-alumno="alumno.id_usuario"/>
-                <Seguimiento v-if="vistaActiva === 'seguimiento'"/>
+                <Seguimiento v-if="vistaActiva === 'seguimiento' && idEstanciaActual" 
+                             :id-estancia="idEstanciaActual" />
                 <PonerNotas v-if="vistaActiva === 'ponerNotas'" :idAlumno="alumno.id_usuario" />
-
             </div>
         </template>
     </div>
 </template>
-

@@ -13,6 +13,26 @@ use Carbon\Carbon;
 class UsuarioController extends Controller
 {
     /**
+     * Listar todos los usuarios (para selectores de emisor/receptor)
+     * Solo para usuarios autenticados
+     */
+    public function listarUsuarios(Request $request)
+    {
+        $usuarios = User::select('id_usuario as id', 'nombre', 'apellidos', 'tipo_usuario', 'email')
+            ->get()
+            ->map(function ($user) {
+                return [
+                    'id' => $user->id,
+                    'nombre' => $user->nombre . ' ' . $user->apellidos,
+                    'tipo_usuario' => $user->tipo_usuario,
+                    'email' => $user->email
+                ];
+            });
+        
+        return response()->json($usuarios);
+    }
+
+    /**
      * Obtener datos del usuario autenticado con información del grado
      */
     public function getAuthUser(Request $request)
@@ -57,6 +77,7 @@ class UsuarioController extends Controller
         $user = $request->user();
         
         // Verificar que sea tutor
+        // (comentado para permitir acceso a todos los usuarios autenticados si es necesario)
 
         // Obtener grados que tienen al menos un alumno
         $grados = Grado::whereHas('alumnos')
@@ -101,30 +122,11 @@ class UsuarioController extends Controller
             ->where(function ($query) use ($user, $ano) {
 
                 //Alumnos SIN estancia este año
-                /*
-                Lo mismo que:
-                NOT EXISTS (
-                    SELECT algo
-                    FROM estancia
-                    WHERE estancia.id_alumno = alumno.id_alumno
-                    AND YEAR(fecha_inicio) = 2026
-                )
-                */
                 $query->whereDoesntHave('estancias', function ($q) use ($ano) {
                     $q->whereYear('fecha_inicio', $ano);
                 })
 
                 //O alumnos con estancia y el user actual es tutor
-                /*
-                Lo mimso que:
-                OR EXISTS (
-                    SELECT algo
-                    FROM estancia
-                    WHERE estancia.id_alumno = alumno.id_alumno
-                    AND YEAR(fecha_inicio) = 2026
-                    AND id_tutor_centro = :id_usuario_actual
-                )
-                */
                 ->orWhereHas('estancias', function ($q) use ($user, $ano) {
                     $q->whereYear('fecha_inicio', $ano)
                     ->where('id_tutor_centro', $user->id_usuario);

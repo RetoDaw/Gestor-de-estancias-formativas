@@ -43,7 +43,7 @@ class Seguimiento extends Model
      */
     public function receptor()
     {
-        return $this->belongsTo(Usuario::class, 'id_receptor', 'id_usuario');
+        return $this->belongsTo(User::class, 'id_receptor', 'id_usuario');
     }
 
     /**
@@ -51,7 +51,7 @@ class Seguimiento extends Model
      */
     public function emisor()
     {
-        return $this->belongsTo(Usuario::class, 'id_emisor', 'id_usuario');
+        return $this->belongsTo(User::class, 'id_emisor', 'id_usuario');
     }
 
 

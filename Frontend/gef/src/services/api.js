@@ -37,12 +37,107 @@ api.interceptors.response.use(
 );
 
 export default {
-     getEmpresas() {
+    // EMPRESAS
+
+    getEmpresas() {
         return api.get('/empresas');
     },
+
+    getEmpresaAlumno(userId) {
+        return api.get('/empresa_alumno', { params: { user_id: userId } });
+    },
+
+    asignarEmpresa(datos) {
+        return api.post('/asignar-empresa', datos);
+    },
+
+    // GRADOS
+
     getGrados() {
         return api.get('/grados');
     },
+
+    listarGradosConAlumnos() {
+        return api.get('/grados-con-alumnos');
+    },
+
+    listarAlumnosPorGrado(idGrado) {
+        return api.get('/alumnos-por-grado', { params: { id_grado: idGrado } });
+    },
+
+
+    // USUARIOS
+
+    getUser() {
+        return api.get('/user');
+    },
+
+    async tipoUsuario(tipo){
+        let response;
+        switch(tipo){
+            case "tutor_centro":
+                response = await api.get('/esTutorCentro');
+                break;
+            case "alumno":
+                response = await api.get('/esAlumno');
+                break;
+        }
+        return response?.data ?? false;
+    },
+
+    getAuthUser() {
+        return api.get('/usuario/me');
+    },
+
+    getAlumno(userId) {
+        return api.get('/alumno', { params: { user_id: userId } });
+    },
+
+    // Listar usuarios para selectores (emisor/receptor)
+    getUsuarios() {
+        return api.get('/usuarios');
+    },
+
+
+    // HORARIO/CALENDARIO
+
+    getHorarioAlumno(userId = null) {
+        const params = userId ? { user_id: userId } : {};
+        return api.get('/horario-alumno', { params });
+    },
+
+    crearHorario(data) {
+        return api.post('/horario', data);
+    },
+
+    actualizarHorario(idEstancia, data) {
+        return api.put(`/horario/${idEstancia}`, data);
+    },
+
+
+    // NOTAS
+
+    getNotaFinalAlumno(idAlumno, idAsignatura) {
+        return api.get(`/alumnos/${idAlumno}/asignaturas/${idAsignatura}/nota-final`);
+    },
+
+    getNotas(idAlumno) {
+        return api.get(`/alumnos/${idAlumno}/notas`);
+    },
+
+    ponerNotasTrans(idAlumno, notas) {
+        console.log('Datos enviados a API:', notas);
+        return api.post(`/alumnos/${idAlumno}/notasTrans`, notas);
+    },
+
+
+    // ESTANCIAS
+
+    getEstanciaAlumno(idAlumno) {
+        return api.get(`/alumnos/${idAlumno}/estancia`);
+    },
+
+    // ENTREGAS Y CUADERNOS
 
     crearEntrega(idGrado) {
         return api.post('/entregas', { id_grado: idGrado });
@@ -69,82 +164,21 @@ export default {
         });
     },
 
-    getUser() {
-        return api.get('/user');
-    },
-
-    async tipoUsuario(tipo){
-        let response;
-        switch(tipo){
-            case "tutor_centro":
-                response = await api.get('/esTutorCentro');
-                break;
-            case "alumno":
-                response = await api.get('/esAlumno');
-                break;
-        }
-        return response?.data ?? false;
-        },
-
-    getAuthUser() {
-        return api.get('/usuario/me');
-    },
-
-    listarGradosConAlumnos() {
-        return api.get('/grados-con-alumnos');
-    },
-
-    listarAlumnosPorGrado(idGrado) {
-        return api.get('/alumnos-por-grado', { params: { id_grado: idGrado } });
-    },
-
-    getAlumno(userId) {
-        return api.get('/alumno', { params: { user_id: userId } });
-    },
-
-    // Horario/Calendario
-    getHorarioAlumno(userId = null) {
-        const params = userId ? { user_id: userId } : {};
-        return api.get('/horario-alumno', { params });
-    },
-
-    crearHorario(data) {
-        return api.post('/horario', data);
-    },
-
-    actualizarHorario(idEstancia, data) {
-        return api.put(`/horario/${idEstancia}`, data);
-    },
-    getEmpresas() {
-        return api.get('/empresas');
-    },
-
-    getEmpresaAlumno(userId) {
-        return api.get('/empresa_alumno', { params: { user_id: userId } });
-    },
-
-    asignarEmpresa(datos) {
-        return api.post('/asignar-empresa', datos);
-    },
+    // SEGUIMIENTOS
     
-    getNotaFinalAlumno(idAlumno, idAsignatura) {
-        return api.get(
-            `/alumnos/${idAlumno}/asignaturas/${idAsignatura}/nota-final`
-        )
+    getSeguimientos(idEstancia) {
+        return api.get('/seguimientos', { params: { id_estancia: idEstancia } });
     },
-    getNotas(idAlumno) {
-        return api.get(
-            `/alumnos/${idAlumno}/notas`
-        )
+
+    crearSeguimiento(datos) {
+        return api.post('/seguimientos', datos);
     },
-     ponerNotasTrans(idAlumno, notas) {
-        console.log('Datos enviados a API:', notas);
-        return api.post(`/alumnos/${idAlumno}/notasTrans`, notas);
+
+    actualizarSeguimiento(idSeguimiento, datos) {
+        return api.put(`/seguimientos/${idSeguimiento}`, datos);
     },
-    getEstanciaAlumno(idAlumno) {
-        return api.get(
-            `/alumnos/${idAlumno}/estancia`
-        )
+
+    eliminarSeguimiento(idSeguimiento) {
+        return api.delete(`/seguimientos/${idSeguimiento}`);
     },
-   
 };

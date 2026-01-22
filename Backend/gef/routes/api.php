@@ -48,10 +48,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/guardarEmpresa', [EmpresaController::class, 'store']);
     Route::get('/empresas', [EmpresaController::class, 'index']);
     Route::get('/empresa_alumno', [EmpresaController::class, 'getEmpresaAlumno']);    
-    Route::get('/mostrarSeguimientos', [SeguimientoController::class, 'index']);
-    Route::get('/seguimientos/{id}', [SeguimientoController::class, 'show']);
-    Route::post('/guardarSeguimiento', [SeguimientoController::class, 'store']);
-    Route::delete('/seguimientos/{id}', [SeguimientoController::class, 'delete']);
+    Route::get('/usuarios', [UsuarioController::class, 'listarUsuarios']);
+    Route::get('/seguimientos', [SeguimientoController::class, 'index']);
+    Route::post('/seguimientos', [SeguimientoController::class, 'store']);
+    Route::put('/seguimientos/{id}', [SeguimientoController::class, 'update']);
+    Route::delete('/seguimientos/{id}', [SeguimientoController::class, 'destroy']);
 
     // Horario/Calendario
 
@@ -75,5 +76,7 @@ Route::middleware('auth:sanctum')->group(function () {
         '/alumnos/{idAlumno}/estancia',
         [AlumnoController::class, 'getEstanciaAlumno']
     );
+
+
 
 });

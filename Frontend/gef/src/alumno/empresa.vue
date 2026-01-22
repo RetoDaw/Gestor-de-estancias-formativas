@@ -13,10 +13,12 @@ const props = defineProps({
 const tieneEmpresa = ref(false);
 const empresa = ref(null);
 const tutor = ref(null);
+const idEstancia = ref(null);
 const empresasDisponibles = ref([]);
 const cargando = ref(true);
 const error = ref(null);
 
+// Modal asignar empresa
 const mostrarModal = ref(false);
 const empresaSeleccionada = ref(null);
 const asignando = ref(false);
@@ -26,6 +28,13 @@ const formulario = ref({
     horas_totales: '',
     dias_totales: ''
 });
+
+// Modal asignar tutor de empresa
+const mostrarModalTutor = ref(false);
+const tutoresDisponibles = ref([]);
+const tutorSeleccionado = ref(null);
+const asignandoTutor = ref(false);
+const cargandoTutores = ref(false);
 
 const formatearClave = (clave) => {
     const mapeo = {
@@ -41,13 +50,19 @@ const formatearClave = (clave) => {
 };
 
 onMounted(async () => {
+    await cargarInformacionEmpresa();
+});
+
+async function cargarInformacionEmpresa() {
     try {
+        cargando.value = true;
         // verifica si el alumno tiene empresa
         const response = await apiService.getEmpresaAlumno(props.alumnoId);
         
         tieneEmpresa.value = response.data.tieneEmpresa;
         empresa.value = response.data.empresa;
         tutor.value = response.data.tutor;
+        idEstancia.value = response.data.id_estancia;
         
         if (!tieneEmpresa.value) {
             const empresasResponse = await apiService.getEmpresas();
@@ -59,7 +74,7 @@ onMounted(async () => {
     } finally {
         cargando.value = false;
     }
-});
+}
 
 function abrirModal(emp) {
     empresaSeleccionada.value = emp;
@@ -83,8 +98,6 @@ function cerrarModal() {
 }
 
 async function asignarEmpresa() {
-
-    
     try {
         asignando.value = true;
         error.value = null;
@@ -99,19 +112,62 @@ async function asignarEmpresa() {
         });
         
         cerrarModal();
-        cargando.value = true;
-        
-        const response = await apiService.getEmpresaAlumno(props.alumnoId);
-        tieneEmpresa.value = response.data.tieneEmpresa;
-        empresa.value = response.data.empresa;
-        tutor.value = response.data.tutor;
+        await cargarInformacionEmpresa();
         
     } catch (err) {
         console.error('Error al asignar empresa:', err);
         error.value = err.response?.data?.message || 'Error al asignar la empresa';
     } finally {
         asignando.value = false;
-        cargando.value = false;
+    }
+}
+
+async function abrirModalTutor() {
+    try {
+        cargandoTutores.value = true;
+        mostrarModalTutor.value = true;
+        tutorSeleccionado.value = null;
+        error.value = null;
+        
+        const response = await apiService.getTutoresEmpresa();
+        tutoresDisponibles.value = response.data;
+        
+    } catch (err) {
+        console.error('Error al cargar tutores:', err);
+        error.value = 'Error al cargar la lista de tutores de empresa';
+    } finally {
+        cargandoTutores.value = false;
+    }
+}
+
+function cerrarModalTutor() {
+    mostrarModalTutor.value = false;
+    tutorSeleccionado.value = null;
+}
+
+async function asignarTutorEmpresa() {
+    if (!tutorSeleccionado.value) {
+        error.value = 'Debe seleccionar un tutor';
+        return;
+    }
+
+    try {
+        asignandoTutor.value = true;
+        error.value = null;
+        
+        await apiService.asignarTutorEmpresa({
+            id_estancia: idEstancia.value,
+            id_tutor_empresa: tutorSeleccionado.value
+        });
+        
+        cerrarModalTutor();
+        await cargarInformacionEmpresa();
+        
+    } catch (err) {
+        console.error('Error al asignar tutor:', err);
+        error.value = err.response?.data?.message || 'Error al asignar el tutor de empresa';
+    } finally {
+        asignandoTutor.value = false;
     }
 }
 </script>
@@ -165,12 +221,21 @@ async function asignarEmpresa() {
                         </table>
                     </div>
                 </div>
-                <div v-else class="alert alert-warning">
-                    Esta empresa no tiene tutor asignado
+                <div v-else class="card">
+                    <div class="card-header">
+                        <h3>Tutor de Empresa</h3>
+                    </div>
+                    <div class="card-body text-center">
+                        <p class="text-muted mb-3">Esta empresa no tiene tutor asignado</p>
+                        <button class="btn btn-primary" @click="abrirModalTutor">
+                            Asignar Tutor de Empresa
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
+        <!-- No tiene empresa -->
         <div v-else class="no-empresa">
             <div class="alert alert-info">
                 <strong>Este alumno no tiene empresa asignada</strong>
@@ -214,6 +279,7 @@ async function asignarEmpresa() {
             </div>
         </div>
 
+        <!-- Modal Asignar Empresa -->
         <div v-if="mostrarModal" class="modal-overlay" @click="cerrarModal">
             <div class="modal-content" @click.stop>
                 <div class="modal-header">
@@ -253,6 +319,72 @@ async function asignarEmpresa() {
                 </div>
             </div>
         </div>
+
+        <!-- Modal Asignar Tutor de Empresa -->
+        <div v-if="mostrarModalTutor" class="modal-overlay" @click="cerrarModalTutor">
+            <div class="modal-content" @click.stop>
+                <div class="modal-header">
+                    <h3>Asignar Tutor de Empresa</h3>
+                    <button class="btn-close" @click="cerrarModalTutor">&times;</button>
+                </div>
+                
+                <div class="modal-body">
+                    <div v-if="cargandoTutores" class="text-center py-4">
+                        <div class="spinner-border"></div>
+                        <p class="mt-2">Cargando tutores...</p>
+                    </div>
+
+                    <div v-else-if="tutoresDisponibles.length === 0" class="alert alert-warning">
+                        No hay tutores de empresa registrados en el sistema
+                    </div>
+
+                    <form v-else @submit.prevent="asignarTutorEmpresa">
+                        <div class="mb-3">
+                            <label class="form-label">Seleccionar Tutor de Empresa</label>
+                            <select class="form-select" v-model="tutorSeleccionado" required>
+                                <option :value="null">Seleccione un tutor...</option>
+                                <option 
+                                    v-for="tut in tutoresDisponibles" 
+                                    :key="tut.id_usuario" 
+                                    :value="tut.id_usuario"
+                                >
+                                    {{ tut.nombre }} {{ tut.apellidos }} - {{ tut.email }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div v-if="tutorSeleccionado" class="alert alert-info">
+                            <strong>Tutor seleccionado:</strong>
+                            <div class="mt-2">
+                                {{ tutoresDisponibles.find(t => t.id_usuario === tutorSeleccionado)?.nombre }}
+                                {{ tutoresDisponibles.find(t => t.id_usuario === tutorSeleccionado)?.apellidos }}
+                            </div>
+                            <div class="text-muted small">
+                                {{ tutoresDisponibles.find(t => t.id_usuario === tutorSeleccionado)?.email }}
+                            </div>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button 
+                                type="button" 
+                                class="btn btn-secondary" 
+                                @click="cerrarModalTutor"
+                                :disabled="asignandoTutor"
+                            >
+                                Cancelar
+                            </button>
+                            <button 
+                                type="submit" 
+                                class="btn btn-primary"
+                                :disabled="asignandoTutor || !tutorSeleccionado"
+                            >
+                                <span v-if="asignandoTutor">Asignando...</span>
+                                <span v-else>Asignar Tutor</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
-

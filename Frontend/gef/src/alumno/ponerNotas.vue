@@ -152,3 +152,5 @@ onMounted(() => {
         <button @click="guardarNotas">Guardar notas</button>
     </div>
 </template>
+
+<style scoped src="../assets/css/notasTrans.css"></style>

@@ -3,7 +3,7 @@
     <h2>Crear Resultado de Aprendizaje</h2>
 
     <form @submit.prevent="$emit('guardar')">
-      <label>Descripción del Resultado de Aprendizaje:</label>
+      <label>Descripción:</label>
       <textarea v-model="ra.descripcion" required></textarea>
 
       <label>Grado:</label>

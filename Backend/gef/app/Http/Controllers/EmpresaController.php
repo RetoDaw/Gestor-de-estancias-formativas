@@ -73,7 +73,7 @@ class EmpresaController extends Controller
             'dias_totales' => 'required|integer|min:1',
         ]);
     
-        $validatedData['id_tutor_centro'] = auth()->user()->id();
+        $validatedData['id_tutor_centro'] = auth()->user()->id;
 
         $estancia = Estancia::create($validatedData);
 

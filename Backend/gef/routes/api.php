@@ -47,7 +47,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/asignar-empresa', [EmpresaController::class, 'asignarEmpresa']);
     Route::post('/guardarEmpresa', [EmpresaController::class, 'store']);
     Route::get('/empresas', [EmpresaController::class, 'index']);
-    Route::get('/empresa_alumno', [EmpresaController::class, 'getEmpresaAlumno']);    
+    Route::get('/empresa_alumno', [EmpresaController::class, 'getEmpresaAlumno']);
+    
+    // Tutores de empresa
+    Route::get('/tutores-empresa', [EmpresaController::class, 'getTutoresEmpresa']);
+    Route::post('/asignar-tutor-empresa', [EmpresaController::class, 'asignarTutorEmpresa']);
+    
     Route::get('/usuarios', [UsuarioController::class, 'listarUsuarios']);
     Route::get('/seguimientos', [SeguimientoController::class, 'index']);
     Route::post('/seguimientos', [SeguimientoController::class, 'store']);
@@ -76,7 +81,4 @@ Route::middleware('auth:sanctum')->group(function () {
         '/alumnos/{idAlumno}/estancia',
         [AlumnoController::class, 'getEstanciaAlumno']
     );
-
-
-
 });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Empresa;
 use App\Models\Estancia;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class EmpresaController extends Controller
@@ -26,12 +27,14 @@ class EmpresaController extends Controller
             return response()->json([
                 'tieneEmpresa' => false,
                 'empresa' => null,
-                'tutor' => null
+                'tutor' => null,
+                'id_estancia' => null
             ]);
         }
         
         return response()->json([
             'tieneEmpresa' => true,
+            'id_estancia' => $estancia->id_estancia,
             'empresa' => [
                 'id_empresa' => $estancia->empresa->id_empresa,
                 'cif' => $estancia->empresa->cif,
@@ -56,6 +59,49 @@ class EmpresaController extends Controller
     {
         $empresas = Empresa::all();
         return response()->json($empresas);
+    }
+
+    /**
+     * Obtener lista de tutores de empresa disponibles
+     */
+    public function getTutoresEmpresa()
+    {
+        $tutores = User::where('tipo_usuario', 'TUTOR_EMPRESA')
+            ->select('id_usuario', 'nombre', 'apellidos', 'email', 'telefono')
+            ->orderBy('nombre')
+            ->orderBy('apellidos')
+            ->get();
+        
+        return response()->json($tutores);
+    }
+
+    /**
+     * Asignar tutor de empresa a una estancia existente
+     */
+    public function asignarTutorEmpresa(Request $request)
+    {
+        $validatedData = $request->validate([
+            'id_estancia' => 'required|exists:estancia,id_estancia',
+            'id_tutor_empresa' => 'required|exists:users,id_usuario',
+        ]);
+
+        // Verificar que el usuario sea realmente un tutor de empresa
+        $tutor = User::find($validatedData['id_tutor_empresa']);
+        if ($tutor->tipo_usuario !== 'TUTOR_EMPRESA') {
+            return response()->json([
+                'message' => 'El usuario seleccionado no es un tutor de empresa'
+            ], 400);
+        }
+
+        // Actualizar la estancia
+        $estancia = Estancia::find($validatedData['id_estancia']);
+        $estancia->id_tutor_empresa = $validatedData['id_tutor_empresa'];
+        $estancia->save();
+
+        return response()->json([
+            'message' => 'Tutor de empresa asignado con éxito',
+            'estancia' => $estancia->load('tutorEmpresa')
+        ]);
     }
 
     /**

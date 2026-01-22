@@ -51,6 +51,15 @@ export default {
         return api.post('/asignar-empresa', datos);
     },
 
+    // Tutor de empresa
+    getTutoresEmpresa() {
+        return api.get('/tutores-empresa');
+    },
+
+    asignarTutorEmpresa(datos) {
+        return api.post('/asignar-tutor-empresa', datos);
+    },
+
     // GRADOS
 
     getGrados() {

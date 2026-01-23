@@ -78,4 +78,4 @@ networks:
 #Para que funcione hacer llo siguiente:
 #En el .env poner la configuracion nueva y DB_HOST=-> nombre del servicio, no localhost.
 #Entrar a la carpeta Gestor-de-estancias-formativas
-#docker compose up -d --build
+#docker-compose up -d --build

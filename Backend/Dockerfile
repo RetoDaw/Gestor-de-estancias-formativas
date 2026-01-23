@@ -17,7 +17,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 
 # Copiar código
-COPY . .
+COPY gef/ /var/www/html
 
 # Instalar dependencias PHP
 RUN composer install --no-dev --optimize-autoloader

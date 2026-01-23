@@ -254,4 +254,60 @@ public function ponerNotasTrans(Request $request, $idAlumno)
         ], 500);
     }
 }
+
+public function ponerNotasTecnicas(Request $request, $idAlumno)
+{
+    $user = $request->user();
+
+    if (!$user->esTutorEmpresa()) {
+        return response()->json(['message' => 'No autorizado'], 403);
+    }
+
+    $validatedData = $request->validate([
+        'id_estancia' => 'required|integer|exists:estancia,id_estancia',
+        'notas' => 'required|array',
+        'notas.*.id_competencia' => 'required|integer|exists:competencia_tecnica,id_competencia',
+        'notas.*.nota' => 'required|numeric|min:1|max:4',
+    ]);
+
+    // Verificar que la estancia pertenece al alumno
+    $estancia = DB::table('estancia')
+        ->where('id_estancia', $validatedData['id_estancia'])
+        ->where('id_alumno', $idAlumno)
+        ->first();
+
+    if (!$estancia) {
+        return response()->json([
+            'message' => 'La estancia no pertenece a este alumno'
+        ], 404);
+    }
+
+    try {
+        DB::beginTransaction();
+
+        foreach ($validatedData['notas'] as $notaData) {
+            $competencia = \App\Models\CompetenciaTecnica::find($notaData['id_competencia']);
+            
+            if (!$competencia) {
+                continue;
+            }
+
+            // Propagar la nota a todos los RAs relacionados con esta competencia
+            $competencia->propagarNotaARAs(
+                $validatedData['id_estancia'],
+                $notaData['nota']
+            );
+        }
+
+        DB::commit();
+
+        return response()->json(['message' => 'Notas técnicas guardadas con éxito']);
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json([
+            'message' => 'Error al guardar las notas técnicas',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
 }

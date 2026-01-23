@@ -190,4 +190,15 @@ export default {
     eliminarSeguimiento(idSeguimiento) {
         return api.delete(`/seguimientos/${idSeguimiento}`);
     },
+
+    // COMPETENCIAS TÉCNICAS
+
+    getCompetenciasTecnicas(idGrado) {
+        return api.get(`/competencias-tecnicas/${idGrado}`);
+    },
+
+    ponerNotasTecnicas(idAlumno, notas) {
+        console.log('Datos de notas técnicas enviados a API:', notas);
+        return api.post(`/alumnos/${idAlumno}/notasTecnicas`, notas);
+    },
 };

@@ -129,8 +129,12 @@ class UsuarioController extends Controller
                 //O alumnos con estancia y el user actual es tutor
                 ->orWhereHas('estancias', function ($q) use ($user, $ano) {
                     $q->whereYear('fecha_inicio', $ano)
-                    ->where('id_tutor_centro', $user->id_usuario);
+                    ->where(function ($sub) use ($user) {
+                        $sub->where('id_tutor_centro', $user->id_usuario)
+                            ->orWhere('id_tutor_empresa', $user->id_usuario);
+                    });
                 });
+
             })
             ->get()
             ->map(function ($alumno) {
@@ -177,6 +181,7 @@ class UsuarioController extends Controller
                     'nombre' => $user->nombre,
                     'apellidos' => $user->apellidos,
                     'telefono' => $user->telefono,
+                    'id_grado' => $alumno->grado->id_grado,
                     'grado' => $alumno->grado->nombre,
                     'familia' => $alumno->grado->familia,
                     'codigo_grado' => $alumno->grado->codigo

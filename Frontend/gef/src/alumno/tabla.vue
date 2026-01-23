@@ -6,7 +6,7 @@ const props = defineProps({
 });
 
 // Lista SOLO los atributos que SÍ quieres mostrar
-const atributosMostrar = ['nombre', 'apellidos', 'email', 'telefono', 'id_grado'];
+const atributosMostrar = ['nombre', 'apellidos', 'email', 'telefono'];
 
 const alumnoFiltrado = computed(() => {
     if (!props.alumno) return {};

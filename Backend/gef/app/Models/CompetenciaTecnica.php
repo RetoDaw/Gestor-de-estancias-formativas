@@ -11,6 +11,8 @@ class CompetenciaTecnica extends Model
 
     protected $table = 'competencia_tecnica';
     protected $primaryKey = 'id_competencia';
+    public $timestamps = false;
+
 
     protected $fillable = [
         'descripcion',

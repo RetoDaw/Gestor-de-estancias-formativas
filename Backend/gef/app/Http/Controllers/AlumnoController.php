@@ -310,4 +310,81 @@ public function ponerNotasTecnicas(Request $request, $idAlumno)
         ], 500);
     }
 }
+// Agregar este método al AlumnoController.php existente
+
+public function actualizarNotaCentro(Request $request, $idAlumno, $idAsignatura)
+{
+    $user = $request->user();
+
+    // Solo tutores de centro pueden modificar
+    if (!$user->esTutorCentro()) {
+        return response()->json(['message' => 'No autorizado. Solo tutores de centro pueden modificar notas.'], 403);
+    }
+
+    // Validar alumno
+    $alumno = Alumno::where('id_alumno', $idAlumno)->first();
+    if (!$alumno) {
+        return response()->json(['message' => 'Alumno no encontrado'], 404);
+    }
+
+    // Validar asignatura
+    $asignatura = Asignatura::find($idAsignatura);
+    if (!$asignatura) {
+        return response()->json(['message' => 'Asignatura no encontrada'], 404);
+    }
+
+    // Validar que la asignatura pertenezca al grado del alumno
+    if ($asignatura->id_grado !== $alumno->id_grado) {
+        return response()->json(['message' => 'La asignatura no pertenece al grado del alumno'], 400);
+    }
+
+    // Validar datos
+    $validatedData = $request->validate([
+        'nota' => 'required|numeric|min:0|max:10'
+    ]);
+
+    try {
+        DB::beginTransaction();
+
+        // Buscar o crear la nota
+        $notaCentro = DB::table('nota_asignatura_centro')
+            ->where('id_alumno', $idAlumno)
+            ->where('id_asignatura', $idAsignatura)
+            ->first();
+
+        if ($notaCentro) {
+            // Actualizar nota existente
+            DB::table('nota_asignatura_centro')
+                ->where('id_alumno', $idAlumno)
+                ->where('id_asignatura', $idAsignatura)
+                ->update([
+                    'nota' => $validatedData['nota'],
+                    'updated_at' => now()
+                ]);
+        } else {
+            // Crear nueva nota
+            DB::table('nota_asignatura_centro')->insert([
+                'id_alumno' => $idAlumno,
+                'id_asignatura' => $idAsignatura,
+                'nota' => $validatedData['nota'],
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'message' => 'Nota actualizada con éxito',
+            'nota' => $validatedData['nota']
+        ]);
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json([
+            'message' => 'Error al actualizar la nota',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
 }

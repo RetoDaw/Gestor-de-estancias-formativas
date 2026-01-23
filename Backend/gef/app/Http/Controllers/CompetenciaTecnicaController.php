@@ -6,8 +6,7 @@ use App\Models\CompetenciaTecnica;
 use Illuminate\Support\Facades\DB;
 class CompetenciaTecnicaController extends Controller
 {
-    public function store(Request $request)
-    {
+   
         public function store(Request $request)
         {
             $request->validate([
@@ -30,24 +29,9 @@ class CompetenciaTecnicaController extends Controller
                     return response()->json(['message' => 'Error al crear la competencia técnica', 'error' => $e->getMessage()], 500);
         
                 }
+    
     }
-        $datos = $request->validate([
-            'descripcion' => 'required|string',
-            'id_grado' => 'required|integer|exists:grado,id_grado',
-        ]);
-        
-        try {
-            $competencia = CompetenciaTecnica::create($datos);
-            return response()->json([
-                'message' => 'Competencia técnica guardada con éxito',
-                'competencia' => $competencia
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Error al guardar la competencia técnica: ' . $e->getMessage()
-            ], 500);
-        }
-    }
+
 
     /**
      * Obtener todas las competencias técnicas de un grado

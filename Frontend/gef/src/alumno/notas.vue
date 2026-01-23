@@ -91,7 +91,7 @@ async function calcularNota() {
         </div>
 
         <table>
-            <thead  style="border: 1px solid black;">
+            <thead>
                 <tr>
                     <th rowspan="2">Asignatura</th>
 

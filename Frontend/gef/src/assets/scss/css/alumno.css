@@ -1,0 +1,28 @@
+#principal .nombre {
+  text-transform: capitalize;
+  margin-top: 1em;
+}
+#principal #opciones button {
+  background-color: #92557f;
+  color: #fff;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+#principal #opciones button:hover {
+  background-color: #bb6da3;
+  transform: translateY(-2px);
+}
+#principal #opciones button:active {
+  transform: translateY(0);
+}
+
+.spinner-border {
+  color: #92557f;
+}
+
+/*# sourceMappingURL=alumno.css.map */

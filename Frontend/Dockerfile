@@ -3,11 +3,11 @@ FROM node:20
 WORKDIR /app
 
 # Instalar dependencias
-COPY package*.json ./
+COPY gef/package*.json ./
 RUN npm install
 
 # Copiar código
-COPY . .
+COPY gef/ .
 
 # Exponer Vite
 EXPOSE 5173

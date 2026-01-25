@@ -1,5 +1,4 @@
 <template>
-           <h2>Crear Competencia</h2>
 
     <form @submit.prevent="$emit('guardar')">
         <div>

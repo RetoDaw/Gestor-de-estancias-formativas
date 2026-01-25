@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h2>Crear Empresa</h2>
     <form @submit.prevent="$emit('guardar')">
       <label for="nombre_empresa">Nombre de la Empresa:</label>
       <input type="text" v-model="empresa.nombre_empresa" required />

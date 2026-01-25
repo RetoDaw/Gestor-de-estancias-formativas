@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h2>Crear Usuario</h2>
     <form @submit.prevent="$emit('guardar')">
       <label>Nombre:</label>
       <input type="text" v-model="usuario.nombre" required />

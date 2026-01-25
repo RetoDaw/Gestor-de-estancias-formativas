@@ -1,0 +1,55 @@
+div h1 {
+  margin-bottom: 1.5rem;
+}
+div .alert {
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+div .alert-warning {
+  background-color: #fff3cd;
+  color: #664d03;
+  border: 1px solid #ffecb5;
+}
+div table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  margin-bottom: 1.5rem;
+}
+div table th,
+div table td {
+  padding: 0.75rem;
+  text-align: left;
+  border: 1px solid #dee2e6;
+}
+div table th {
+  background-color: #e9ecef;
+  font-weight: 600;
+}
+div table tbody tr td button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  background-color: #0d6efd;
+  color: white;
+}
+div table tbody tr td button:hover {
+  background-color: #0b5ed7;
+}
+div button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  background-color: #92557f;
+  color: white;
+}
+div button:hover {
+  background-color: #bb6da3;
+}
+
+/*# sourceMappingURL=verNotas.css.map */

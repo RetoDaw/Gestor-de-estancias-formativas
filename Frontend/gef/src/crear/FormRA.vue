@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h2>Crear Resultado de Aprendizaje</h2>
 
     <form @submit.prevent="$emit('guardar')">
       <label>Descripción:</label>

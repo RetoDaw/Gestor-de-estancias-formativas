@@ -85,5 +85,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // Competencias técnicas
 Route::get('/competencias-tecnicas/{id_grado}', [CompetenciaTecnicaController::class, 'obtenerPorGrado']);
 Route::post('/alumnos/{idAlumno}/notasTecnicas', [AlumnoController::class, 'ponerNotasTecnicas']);
-
+    Route::put(
+        '/alumnos/{idAlumno}/asignaturas/{idAsignatura}/nota-centro',
+        [AlumnoController::class, 'actualizarNotaCentro']
+    );
+    
 });

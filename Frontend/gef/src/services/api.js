@@ -201,4 +201,10 @@ export default {
         console.log('Datos de notas técnicas enviados a API:', notas);
         return api.post(`/alumnos/${idAlumno}/notasTecnicas`, notas);
     },
+
+    actualizarNotaCentro(idAlumno, idAsignatura, nota) {
+    return api.put(`/alumnos/${idAlumno}/asignaturas/${idAsignatura}/nota-centro`, {
+        nota: nota
+    });
+    },
 };

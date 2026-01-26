@@ -31,6 +31,10 @@ RUN sed -ri -e 's!/var/www/html!/var/www/html/public!g' \
     /etc/apache2/sites-available/*.conf \
     /etc/apache2/apache2.conf
 
+RUN php artisan key:generate
+RUN php artisan migrate
+RUN php artisan optimize:clear
+
 EXPOSE 80
 
 CMD ["apache2-foreground"]

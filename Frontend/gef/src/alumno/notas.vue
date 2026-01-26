@@ -12,6 +12,7 @@ const props = defineProps({
 const asignaturas = ref([])
 const tecnicas = ref([])
 const transversales = ref([])
+const cuaderno = ref([])
 const tieneEstancia = ref(false)
 const editando = ref(null) // { id_asignatura: X, nota: Y }
 const notaTemporal = ref('')
@@ -20,6 +21,7 @@ const esTutorCentro = ref(false)
 const mensaje = ref({ tipo: '', texto: '' })
 
 function mostrarDato(dato) {
+    console.log(dato)
     if (dato == null || dato === undefined) {
         return 'No hay nota'
     }
@@ -43,12 +45,14 @@ async function getNotas() {
         asignaturas.value = response.data.asignaturas
         tecnicas.value = response.data.tecnicas
         transversales.value = response.data.transversales 
+        cuaderno.value = response.data.cuaderno
         tieneEstancia.value = response.data.tiene_estancia
     } catch (err) {
         console.error('Error al cargar notas:', err)
         asignaturas.value = []
         tecnicas.value = []
         transversales.value = []
+        cuaderno.value = []
     }
 }
 
@@ -186,12 +190,13 @@ async function calcularNota() {
                 <thead>
                     <tr>
                         <th rowspan="2" class="th-asignatura">Asignatura</th>
-                        <th colspan="4" class="th-grupo">Evaluaciones</th>
+                        <th colspan="5" class="th-grupo">Evaluaciones</th>
                     </tr>
                     <tr>
                         <th>Nota Centro</th>
                         <th>Com. Técnicas</th>
                         <th>Com. Trans.</th>
+                        <th>Cuaderno</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -239,6 +244,7 @@ async function calcularNota() {
                         
                         <td class="td-nota">{{ mostrarDato(getNotaTecnicaAsignatura(asignatura.nombre)) }}</td>
                         <td class="td-nota">{{ mostrarDato(getNotaTransversalPromedio() * 2.5) }}</td>
+                        <td class="td-nota">{{ mostrarDato(cuaderno[0].nota) }}</td>
                         
                         <!-- Botón de acción -->
                         <td class="td-accion">

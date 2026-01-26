@@ -157,6 +157,18 @@ class AlumnoController extends Controller
                     'nota_competencia_transversal.nota'
                 )
                 ->get();
+
+            // 4. NOTAS DE CUADERNO
+            $cuaderno = DB::table('cuaderno_practicas')
+                ->leftJoin('nota_cuaderno', function ($join) use ($estancia) {
+                    $join->on('cuaderno_practicas.id_cuaderno', '=', 'nota_cuaderno.id_cuaderno')
+                         ->where('cuaderno_practicas.id_estancia', '=', $estancia->id_estancia);
+                })
+                ->select(
+                    'cuaderno_practicas.id_cuaderno',
+                    'nota_cuaderno.nota'
+                )
+                ->get();
         }
 
         return response()->json([
@@ -164,6 +176,7 @@ class AlumnoController extends Controller
             'asignaturas' => $asignaturas,
             'tecnicas' => $tecnicas,
             'transversales' => $transversales,
+            'cuaderno' => $cuaderno,
             'tiene_estancia' => $estancia !== null
         ]);
 

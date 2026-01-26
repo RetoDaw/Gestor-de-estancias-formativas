@@ -5,7 +5,7 @@
 ❗ 🔗 Enlace trello: https://trello.com/b/XA7ifJiQ/reto-gestor-de-estancias
 
 
-❗ 🔗 Enlace figma:
+❗ 🔗 Enlace figma: https://www.figma.com/design/kXls9HgPCWsAlqNbuerbe4/Gestor_Estancias_Formativas?node-id=4-1651&t=Xt4aIoaiDNVJ6pQd-0
 
 
 ‼️ Pasos a seguir:

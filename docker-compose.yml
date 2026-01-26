@@ -10,7 +10,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: gef
-      MYSQL_USER: root
+      MYSQL_USER: purpor
       MYSQL_PASSWORD: purpor
     ports:
       - "3306:3306"
@@ -69,13 +69,19 @@ networks:
   fct_net:
     driver: bridge
 
-# Servicio     URL   
-# Laravel API  http://localhost:8000 http://localhost:8000 
-# Vue          http://localhost:5173 http://localhost:5173 
-# phpMyAdmin   http://localhost:8080 http://localhost:8080 
-# MySQL        localhost:3306                                 
+# Servicio     URL
+# Laravel API  http://localhost:8000 http://localhost:8000
+# Vue          http://localhost:5173 http://localhost:5173
+# phpMyAdmin   http://localhost:8080 http://localhost:8080
+# MySQL        localhost:3306
 
 #Para que funcione hacer llo siguiente:
 #En el .env poner la configuracion nueva y DB_HOST=-> nombre del servicio, no localhost.
 #Entrar a la carpeta Gestor-de-estancias-formativas
-#docker-compose up -d --build
+#docker-compose down -v
+#docker-compose build --no-cache
+#docker-compose up -d
+#docker exec -it fct_laravel bash
+#php artisan key:generate
+#php artisan migrate:fresh
+#php artisan optimize:clea

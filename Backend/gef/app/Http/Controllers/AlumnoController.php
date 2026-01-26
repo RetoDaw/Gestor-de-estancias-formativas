@@ -386,5 +386,56 @@ public function actualizarNotaCentro(Request $request, $idAlumno, $idAsignatura)
             'error' => $e->getMessage()
         ], 500);
     }
+    
+}
+public function notaCuaderno(Request $request, $idCuaderno)
+{
+    $user = $request->user();
+
+    if (!$user->esTutorCentro()) {
+        return response()->json(['message' => 'No autorizado'], 403);
+    }
+
+    $validatedData = $request->validate([
+        'nota' => 'required|integer|min:0|max:10'
+    ]);
+
+    // Verificar que la estancia pertenece al alumno
+    $cuaderno = DB::table('cuaderno_practicas')
+        ->where('id_cuaderno', $idCuaderno)
+        ->first();
+
+    if (!$cuaderno) {
+        return response()->json([
+            'message' => 'El cuaderno no existe'
+        ], 404);
+    }
+
+    try {
+        
+        // Insertar o actualizar nota del cuaderno
+        DB::table('nota_cuaderno')->updateOrInsert(
+            [
+                'id_cuaderno' => $idCuaderno
+            ],
+            [
+                'id_tutor' => $user->id_usuario,
+                'nota' => $validatedData['nota'],
+                'fecha_evaluacion' => now(),
+                'updated_at' => now(),
+                'created_at' => now()
+            ]
+        );
+
+        DB::commit();
+
+        return response()->json(['message' => 'Nota de cuaderno guardada con éxito']);
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json([
+            'message' => 'Error al guardar la nota del cuaderno',
+            'error' => $e->getMessage()
+        ], 500);
+    }
 }
 }

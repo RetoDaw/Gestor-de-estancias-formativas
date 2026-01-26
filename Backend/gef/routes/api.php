@@ -44,6 +44,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/entregas', [EntregaController::class, 'index']);
     Route::get('/cuadernos', [EntregaController::class, 'verCuadernos']);
     Route::post('/cuadernos', [EntregaController::class, 'subirCuaderno']);
+    Route::post('/cuaderno/{idCuaderno}/nota', [AlumnoController::class, 'notaCuaderno']);
     Route::post('/asignar-empresa', [EmpresaController::class, 'asignarEmpresa']);
     Route::post('/guardarEmpresa', [EmpresaController::class, 'store']);
     Route::get('/empresas', [EmpresaController::class, 'index']);

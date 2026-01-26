@@ -207,4 +207,9 @@ export default {
         nota: nota
     });
     },
+
+    guardarNotaCuaderno(idCuaderno, nota) {
+        console.log('Nota de cuaderno:', nota);
+        return api.post(`/cuaderno/${idCuaderno}/nota`, {nota});
+    },
 };

@@ -86,7 +86,8 @@ async function guardarNota(idCuaderno) {
         return
     }
     try {
-        await api.guardarNotaCuaderno(idCuaderno, notaCuaderno.value)
+        const response = await api.guardarNotaCuaderno(idCuaderno, notaCuaderno.value)
+        alert(response.data.message)
         cancelarNota()
     } catch (e) {
         console.error(e)

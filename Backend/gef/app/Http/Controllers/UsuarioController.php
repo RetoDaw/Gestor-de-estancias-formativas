@@ -156,7 +156,6 @@ class UsuarioController extends Controller
     {
         $userId = $request->query('user_id');
         
-        // Verificar que el usuario autenticado sea tutor o sea el mismo alumno
         $authUser = $request->user();
         if (!$authUser->esTutorCentro() && 
             !$authUser->esTutorEmpresa() && 
@@ -243,6 +242,11 @@ class UsuarioController extends Controller
     {
         return response()->json(
             $request->user()->esTutorCentro()
+        );
+    }
+    public function esAdmin(Request $request){
+        return response()->json(
+            $request->user()->esAdministrador()
         );
     }
 }

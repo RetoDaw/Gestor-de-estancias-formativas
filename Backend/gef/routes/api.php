@@ -25,7 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
     
     Route::get('/esTutorCentro', [UsuarioController::class, 'esTutorCentro']);
     Route::get('/esAlumno', [UsuarioController::class, 'esAlumno']);
-    
+    Route::get('esAdmin', [UsuarioController::class, 'esAdmin']);
     Route::get('/grados-con-alumnos', [UsuarioController::class, 'listarGradosConAlumnos']);
     Route::get('/alumnos-por-grado', [UsuarioController::class, 'listarAlumnosPorGrado']);
     Route::get('/alumno', [UsuarioController::class, 'getAlumno']);

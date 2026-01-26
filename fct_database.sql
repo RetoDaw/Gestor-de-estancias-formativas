@@ -33,7 +33,7 @@ DROP TABLE IF EXISTS usuario;
 -- ============================================
 -- 1. USUARIOS (Tabla base simplificada)
 -- ============================================
-CREATE TABLE usuario (
+CREATE TABLE users (
     id_usuario INT PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(100) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,

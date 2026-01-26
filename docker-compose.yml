@@ -78,6 +78,11 @@ networks:
 #Para que funcione hacer llo siguiente:
 #En el .env poner la configuracion nueva y DB_HOST=-> nombre del servicio, no localhost.
 #Entrar a la carpeta Gestor-de-estancias-formativas
+#cp Backend/gef/.env.example Backend/gef/.env
+#nano Backend/gef/.env
+#Dejarlo al gusto
+#nano Frontend/gef/src/axios.js
+#nano Frontendgef/src/services/api.js
 #docker-compose down -v
 #docker-compose build --no-cache
 #docker-compose up -d
@@ -86,6 +91,4 @@ networks:
 #php artisan migrate:fresh
 #php artisan optimize:clear
 #php artisan storage:link
-#nano Frontend/gef/src/axios.js
-#nano Frontendgef/src/services/api.js
 #En los 2 de arriba cambiar localhost por la ip del servidor

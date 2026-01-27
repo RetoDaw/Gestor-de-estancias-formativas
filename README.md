@@ -6,7 +6,7 @@
 
 ‼️Usuarios disponibles:
 
-💮 Admins: mnieves@egibide.org, mdiaz@egibide.
+💮 Admins: mnieves@egibide.org, mdiaz@egibide.org
 
 💮 Alumno: pedro.jimenez@alumno.edu
 

@@ -59,8 +59,10 @@ onMounted(() => {
             
             <button v-if="esAdmin" class="col-2" @click="cambiar('crear')">Crear</button>
             
-            <button v-if="esAlumno" class="col-2" @click="cambiar('alumno')">Mi información</button>
-            
+            <template v-if="esAlumno">
+                <button class="col-2" @click="cambiar('alumno')">Mi información</button>     
+                <button class="col-2 ms-3" @click="cambiar('cuaderno')">Cuaderno</button>          
+            </template>
             <template v-if="esTutorCentro">
                 <button class="col-2" @click="cambiar('alumno')">Info de alumno</button>
                 <button class="col-2 ms-3" @click="cambiar('cuaderno')">Cuaderno</button>

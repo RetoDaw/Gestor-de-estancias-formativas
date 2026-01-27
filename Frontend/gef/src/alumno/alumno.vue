@@ -236,7 +236,6 @@ onMounted(() => {
                     <template v-if="esTutorEmpresa">
                         <button class="col-5 mb-2" @click="cambiar('calendario')">Ver calendario</button>
                         <button class="col-5 ms-2 mb-2" @click="cambiar('ponerNotas')">Poner Notas</button>
-                        <button class="col-5" @click="cambiar('notas')">Ver notas</button>
                     </template>
 
                     <template v-if="esTutorCentro">
